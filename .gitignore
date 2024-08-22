@@ -10,3 +10,5 @@ data
 /web/node_modules
 cmd.md
 .env
+.DS_Store
+.github

@@ -102,6 +102,9 @@ func main() {
 	store := cookie.NewStore([]byte(config.SessionSecret))
 	server.Use(sessions.Sessions("session", store))
 
+	// Apply CORS middleware
+	server.Use(middleware.CORS())
+
 	router.SetRouter(server, buildFS)
 	var port = os.Getenv("PORT")
 	if port == "" {
