@@ -1,16 +1,18 @@
 import { TableCell, TableHead, TableRow } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const RedemptionTableHead = () => {
+  const { t } = useTranslation();
   return (
     <TableHead>
       <TableRow>
-        <TableCell>ID</TableCell>
-        <TableCell>名称</TableCell>
-        <TableCell>状态</TableCell>
-        <TableCell>额度</TableCell>
-        <TableCell>创建时间</TableCell>
-        <TableCell>兑换时间</TableCell>
-        <TableCell>操作</TableCell>
+      <TableCell>{t('id')}</TableCell>
+      <TableCell>{t('name')}</TableCell>
+      <TableCell>{t('status')}</TableCell>
+      <TableCell>{t('quota')}</TableCell>
+      <TableCell>{t('creationTime')}</TableCell>
+      <TableCell>{t('redemptionTime')}</TableCell>
+      <TableCell>{t('actions')}</TableCell>
       </TableRow>
     </TableHead>
   );

@@ -7,12 +7,15 @@ import { Divider, List, Typography } from '@mui/material';
 // project imports
 import NavItem from '../NavItem';
 import NavCollapse from '../NavCollapse';
+import { useTranslation } from 'react-i18next';
 
 // ==============================|| SIDEBAR MENU LIST GROUP ||============================== //
 
+
+
 const NavGroup = ({ item }) => {
   const theme = useTheme();
-
+  const { t } = useTranslation();
   // menu list collapse & items
   const items = item.children?.map((menu) => {
     switch (menu.type) {
@@ -23,11 +26,14 @@ const NavGroup = ({ item }) => {
       default:
         return (
           <Typography key={menu.id} variant="h6" color="error" align="center">
-            Menu Items Error
+            {t('menuItemsError')}
           </Typography>
         );
     }
   });
+
+
+
 
   return (
     <>

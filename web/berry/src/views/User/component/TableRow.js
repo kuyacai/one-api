@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
@@ -37,6 +38,7 @@ function renderRole(role) {
 }
 
 export default function UsersTableRow({ item, manageUser, handleOpenModal, setModalUserId }) {
+  const { t } = useTranslation();
   const theme = useTheme();
   const [open, setOpen] = useState(null);
   const [openDelete, setOpenDelete] = useState(false);
@@ -85,19 +87,19 @@ export default function UsersTableRow({ item, manageUser, handleOpenModal, setMo
 
         <TableCell>
           <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="center">
-            <Tooltip title={'剩余额度'} placement="top">
+            <Tooltip title={t('remainingQuota')} placement="top">
               <Label color={'primary'} variant="outlined">
                 {' '}
                 {renderQuota(item.quota)}{' '}
               </Label>
             </Tooltip>
-            <Tooltip title={'已用额度'} placement="top">
+            <Tooltip title={t('usedQuota')} placement="top">
               <Label color={'primary'} variant="outlined">
                 {' '}
                 {renderQuota(item.used_quota)}{' '}
               </Label>
             </Tooltip>
-            <Tooltip title={'请求次数'} placement="top">
+            <Tooltip title={t('requestCount')} placement="top">
               <Label color={'primary'} variant="outlined">
                 {' '}
                 {renderNumber(item.request_count)}{' '}
@@ -108,13 +110,13 @@ export default function UsersTableRow({ item, manageUser, handleOpenModal, setMo
         <TableCell>{renderRole(item.role)}</TableCell>
         <TableCell>
           <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="center">
-            <Tooltip title={item.wechat_id ? item.wechat_id : '未绑定'} placement="top">
+            <Tooltip title={item.wechat_id ? item.wechat_id : t('notBound')} placement="top">
               <IconBrandWechat color={item.wechat_id ? theme.palette.success.dark : theme.palette.grey[400]} />
             </Tooltip>
-            <Tooltip title={item.github_id ? item.github_id : '未绑定'} placement="top">
+            <Tooltip title={item.github_id ? item.github_id : t('notBound')} placement="top">
               <IconBrandGithub color={item.github_id ? theme.palette.grey[900] : theme.palette.grey[400]} />
             </Tooltip>
-            <Tooltip title={item.email ? item.email : '未绑定'} placement="top">
+            <Tooltip title={item.email ? item.email : t('notBound')} placement="top">
               <IconMail color={item.email ? theme.palette.grey[900] : theme.palette.grey[400]} />
             </Tooltip>
           </Stack>
@@ -149,7 +151,7 @@ export default function UsersTableRow({ item, manageUser, handleOpenModal, setMo
             }}
           >
             <IconUser style={{ marginRight: '16px' }} />
-            {item.role === 1 ? '设为管理员' : '取消管理员'}
+            {item.role === 1 ? t('setAsAdmin') : t('removeAdmin')}
           </MenuItem>
         )}
 
@@ -161,23 +163,23 @@ export default function UsersTableRow({ item, manageUser, handleOpenModal, setMo
           }}
         >
           <IconEdit style={{ marginRight: '16px' }} />
-          编辑
+          {t('edit')}
         </MenuItem>
         <MenuItem onClick={handleDeleteOpen} sx={{ color: 'error.main' }}>
           <IconTrash style={{ marginRight: '16px' }} />
-          删除
+          {t('delete')}
         </MenuItem>
       </Popover>
 
       <Dialog open={openDelete} onClose={handleDeleteClose}>
-        <DialogTitle>删除用户</DialogTitle>
+        <DialogTitle>{t('deleteUser')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>是否删除用户 {item.name}？</DialogContentText>
+          <DialogContentText>{t('confirmDeleteUser')} {item.name}？</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteClose}>关闭</Button>
+          <Button onClick={handleDeleteClose}>{t('close')}</Button>
           <Button onClick={handleDelete} sx={{ color: 'error.main' }} autoFocus>
-            删除
+            {t('delete')}
           </Button>
         </DialogActions>
       </Dialog>

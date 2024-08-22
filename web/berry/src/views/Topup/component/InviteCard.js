@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Stack, Typography, Container, Box, OutlinedInput, InputAdornment, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import SubCard from 'ui-component/cards/SubCard';
@@ -7,12 +8,13 @@ import { API } from 'utils/api';
 import { showError, copy } from 'utils/common';
 
 const InviteCard = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const [inviteUl, setInviteUrl] = useState('');
 
   const handleInviteUrl = async () => {
     if (inviteUl) {
-      copy(inviteUl, '邀请链接');
+      copy(inviteUl, t('invitationLink'));
       return;
     }
     const res = await API.get('/api/user/aff');
@@ -20,7 +22,7 @@ const InviteCard = () => {
     if (success) {
       let link = `${window.location.origin}/register?aff=${data}`;
       setInviteUrl(link);
-      copy(link, '邀请链接');
+      copy(link, t('invitationLink'));
     } else {
       showError(message);
     }
@@ -46,23 +48,23 @@ const InviteCard = () => {
       >
         <Stack justifyContent="center" alignItems={'center'} spacing={3}>
           <Typography variant="h3" sx={{ color: theme.palette.primary.dark }}>
-            邀请奖励
+            {t('invitationReward')}
           </Typography>
           <Typography variant="body" sx={{ color: theme.palette.primary.dark }}>
-            分享您的邀请链接，邀请好友注册，即可获得奖励！
+            {t('invitationTips')}
           </Typography>
 
           <OutlinedInput
             id="invite-url"
-            label="邀请链接"
+            label={t('invitationLink')}
             type="text"
             value={inviteUl}
             name="invite-url"
-            placeholder="点击生成邀请链接"
+            placeholder={t('clickToGenerateInvitationLink')}
             endAdornment={
               <InputAdornment position="end">
                 <Button variant="contained" onClick={handleInviteUrl}>
-                  {inviteUl ? '复制' : '生成'}
+                  {inviteUl ? t('copy') : t('generate')}
                 </Button>
               </InputAdornment>
             }

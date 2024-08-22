@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Turnstile from "react-turnstile";
 import { API } from "utils/api";
+import { useTranslation } from 'react-i18next';
 
 // material-ui
 import { useTheme } from "@mui/material/styles";
@@ -28,6 +29,7 @@ import { showError, showInfo, showSuccess } from "utils/common";
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const ForgetPasswordForm = ({ ...others }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const siteInfo = useSelector((state) => state.siteInfo);
 
@@ -42,7 +44,7 @@ const ForgetPasswordForm = ({ ...others }) => {
     setDisableButton(true);
     setSubmitting(true);
     if (turnstileEnabled && turnstileToken === "") {
-      showInfo("请稍后几秒重试，Turnstile 正在检查用户环境！");
+      showInfo(t('checkingUserEnvironment'));
       setSubmitting(false);
       return;
     }
@@ -51,7 +53,7 @@ const ForgetPasswordForm = ({ ...others }) => {
     );
     const { success, message } = res.data;
     if (success) {
-      showSuccess("重置邮件发送成功，请检查邮箱！");
+      showSuccess(t('resetEmailSentSuccessfullyPleaseCheckYourInbox'));
       setSendEmail(true);
     } else {
       showError(message);
@@ -85,7 +87,7 @@ const ForgetPasswordForm = ({ ...others }) => {
     <>
       {sendEmail ? (
         <Typography variant="h3" padding={"20px"}>
-          重置邮件发送成功，请检查邮箱！
+          {t('resetEmailSentSuccessfullyPleaseCheckYourInbox')}
         </Typography>
       ) : (
         <Formik
@@ -94,9 +96,9 @@ const ForgetPasswordForm = ({ ...others }) => {
           }}
           validationSchema={Yup.object().shape({
             email: Yup.string()
-              .email("必须是有效的Email地址")
+              .email(t('mustBeAValidEmailAddress'))
               .max(255)
-              .required("Email是必填项"),
+              .required(t('emailIsRequired')),
           })}
           onSubmit={submit}
         >
@@ -159,7 +161,8 @@ const ForgetPasswordForm = ({ ...others }) => {
                     variant="contained"
                     color="primary"
                   >
-                    {disableButton ? `重试 (${countdown})` : "提交"}
+                    {t('loginWithGitHub')}
+                    {disableButton ? `t('retry') (${countdown})` : t('submit')}
                   </Button>
                 </AnimateButton>
               </Box>

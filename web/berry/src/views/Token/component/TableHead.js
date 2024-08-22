@@ -1,16 +1,18 @@
 import { TableCell, TableHead, TableRow } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const TokenTableHead = () => {
+  const { t } = useTranslation();
   return (
     <TableHead>
       <TableRow>
-        <TableCell>名称</TableCell>
-        <TableCell>状态</TableCell>
-        <TableCell>已用额度</TableCell>
-        <TableCell>剩余额度</TableCell>
-        <TableCell>创建时间</TableCell>
-        <TableCell>过期时间</TableCell>
-        <TableCell>操作</TableCell>
+        <TableCell>{t('name')}</TableCell>
+        <TableCell>{t('status')}</TableCell>
+        <TableCell>{t('usedQuota')}</TableCell>
+        <TableCell>{t('remainingQuota')}</TableCell>
+        <TableCell>{t('creationTime')}</TableCell>
+        <TableCell>{t('expirationTime')}</TableCell>
+        <TableCell>{t('actions')}</TableCell>
       </TableRow>
     </TableHead>
   );

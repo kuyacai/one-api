@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -57,6 +58,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const StatisticalLineChartCard = ({ isLoading, title, chartData, todayValue }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -100,7 +102,7 @@ const StatisticalLineChartCard = ({ isLoading, title, chartData, todayValue }) =
                           color: theme.palette.primary[200]
                         }}
                       >
-                        无数据
+                        {t('noData')}
                       </Typography>
                     )}
                   </Grid>

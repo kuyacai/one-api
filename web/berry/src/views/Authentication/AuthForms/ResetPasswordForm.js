@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
 // material-ui
 import { Button, Stack, Typography, Alert } from '@mui/material';
 
@@ -11,6 +11,7 @@ import { API } from 'utils/api';
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const ResetPasswordForm = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const [inputs, setInputs] = useState({
     email: '',
@@ -24,7 +25,7 @@ const ResetPasswordForm = () => {
     if (success) {
       let password = res.data.data;
       setNewPassword(password);
-      copy(password, '新密码');
+      copy(password, t('newPassword'));
     } else {
       showError(message);
     }
@@ -43,16 +44,18 @@ const ResetPasswordForm = () => {
     <Stack spacing={3} padding={'24px'} justifyContent={'center'} alignItems={'center'}>
       {!inputs.email || !inputs.token ? (
         <Typography variant="h3" sx={{ textDecoration: 'none' }}>
-          无效的链接
+          
+          {t('invalidLink')}
         </Typography>
       ) : newPassword ? (
         <Alert severity="error">
-          你的新密码是: <b>{newPassword}</b> <br />
-          请登录后及时修改密码
+          {t('yourNewPasswordIs')} <b>{newPassword}</b> <br />
+          
+          {t('pleaseLoginAndChangeYourPasswordPromptly')}
         </Alert>
       ) : (
         <Button fullWidth onClick={submit} size="large" type="submit" variant="contained" color="primary">
-          点击重置密码
+          {t('clickToResetPassword')}
         </Button>
       )}
     </Stack>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { showError, showSuccess } from 'utils/common';
+import { useTranslation } from 'react-i18next';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -22,6 +23,7 @@ import EditeModal from './component/EditModal';
 import { useSelector } from 'react-redux';
 
 export default function Token() {
+  const { t } = useTranslation();
   const [tokens, setTokens] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [searching, setSearching] = useState(false);
@@ -106,7 +108,7 @@ export default function Token() {
     }
     const { success, message } = res.data;
     if (success) {
-      showSuccess('操作成功完成！');
+      showSuccess(t('operationCompletedSuccessfully'));
       if (action === 'delete') {
         await handleRefresh();
       }
@@ -142,7 +144,7 @@ export default function Token() {
   return (
     <>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2.5}>
-        <Typography variant="h4">令牌</Typography>
+        <Typography variant="h4">{t('token')}</Typography>
         <Button
           variant="contained"
           color="primary"
@@ -151,17 +153,17 @@ export default function Token() {
           }}
           startIcon={<IconPlus />}
         >
-          新建令牌
+          {t('newToken')}
         </Button>
       </Stack>
       <Stack mb={2}>
         <Alert severity="info">
-          将 OpenAI API 基础地址 https://api.openai.com 替换为 <b>{siteInfo.server_address}</b>，复制下面的密钥即可使用
+          {t('replaceOpenAIApiBaseUrl')} <b>{siteInfo.server_address}</b>，{t('copyKeyToUse')}
         </Alert>
       </Stack>
       <Card>
         <Box component="form" onSubmit={searchTokens} noValidate sx={{marginTop: 2}}>
-          <TableToolBar filterName={searchKeyword} handleFilterName={handleSearchKeyword} placeholder={'搜索令牌的名称...'} />
+          <TableToolBar filterName={searchKeyword} handleFilterName={handleSearchKeyword} placeholder={t('searchTokenName')} />
         </Box>
         <Toolbar
           sx={{
@@ -175,7 +177,7 @@ export default function Token() {
           <Container>
             <ButtonGroup variant="outlined" aria-label="outlined small primary button group" sx={{marginBottom: 2}}>
               <Button onClick={handleRefresh} startIcon={<IconRefresh width={'18px'} />}>
-                刷新
+                {t('refresh')}
               </Button>
             </ButtonGroup>
           </Container>

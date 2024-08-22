@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useTranslation } from 'react-i18next';
 import { useTheme } from "@mui/material/styles";
 import {
   IconUser,
@@ -20,7 +21,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import LogType from "../type/LogType";
 require("dayjs/locale/zh-cn");
-// ----------------------------------------------------------------------
 
 export default function TableToolBar({
   filterName,
@@ -29,6 +29,7 @@ export default function TableToolBar({
 }) {
   const theme = useTheme();
   const grey500 = theme.palette.grey[500];
+  const { t } = useTranslation();
 
   return (
     <>
@@ -39,17 +40,17 @@ export default function TableToolBar({
         paddingBottom={"0px"}
       >
         <FormControl>
-          <InputLabel htmlFor="channel-token_name-label">令牌名称</InputLabel>
+          <InputLabel htmlFor="channel-token_name-label">{t('tokenName')}</InputLabel>
           <OutlinedInput
             id="token_name"
             name="token_name"
             sx={{
               minWidth: "100%",
             }}
-            label="令牌名称"
+            label={t('tokenName')}
             value={filterName.token_name}
             onChange={handleFilterName}
-            placeholder="令牌名称"
+            placeholder={t('tokenName')}
             startAdornment={
               <InputAdornment position="start">
                 <IconKey stroke={1.5} size="20px" color={grey500} />
@@ -58,17 +59,17 @@ export default function TableToolBar({
           />
         </FormControl>
         <FormControl>
-          <InputLabel htmlFor="channel-model_name-label">模型名称</InputLabel>
+          <InputLabel htmlFor="channel-model_name-label">{t('modelName')}</InputLabel>
           <OutlinedInput
             id="model_name"
             name="model_name"
             sx={{
               minWidth: "100%",
             }}
-            label="模型名称"
+            label={t('modelName')}
             value={filterName.model_name}
             onChange={handleFilterName}
-            placeholder="模型名称"
+            placeholder={t('modelName')}
             startAdornment={
               <InputAdornment position="start">
                 <IconBrandGithubCopilot
@@ -87,7 +88,7 @@ export default function TableToolBar({
             adapterLocale={"zh-cn"}
           >
             <DateTimePicker
-              label="起始时间"
+              label={t('startTime')}
               ampm={false}
               name="start_timestamp"
               value={
@@ -121,7 +122,7 @@ export default function TableToolBar({
             adapterLocale={"zh-cn"}
           >
             <DateTimePicker
-              label="结束时间"
+              label={t('endTime')}
               name="end_timestamp"
               ampm={false}
               value={
@@ -157,17 +158,17 @@ export default function TableToolBar({
       >
         {userIsAdmin && (
           <FormControl>
-            <InputLabel htmlFor="channel-channel-label">渠道ID</InputLabel>
+            <InputLabel htmlFor="channel-channel-label">{t('channelID')}</InputLabel>
             <OutlinedInput
               id="channel"
               name="channel"
               sx={{
                 minWidth: "100%",
               }}
-              label="渠道ID"
+              label={t('channelID')}
               value={filterName.channel}
               onChange={handleFilterName}
-              placeholder="渠道ID"
+              placeholder={t('channelID')}
               startAdornment={
                 <InputAdornment position="start">
                   <IconSitemap stroke={1.5} size="20px" color={grey500} />
@@ -179,17 +180,17 @@ export default function TableToolBar({
 
         {userIsAdmin && (
           <FormControl>
-            <InputLabel htmlFor="channel-username-label">用户名称</InputLabel>
+            <InputLabel htmlFor="channel-username-label">{t('username')}</InputLabel>
             <OutlinedInput
               id="username"
               name="username"
               sx={{
                 minWidth: "100%",
               }}
-              label="用户名称"
+              label={t('username')}
               value={filterName.username}
               onChange={handleFilterName}
-              placeholder="用户名称"
+              placeholder={t('username')}
               startAdornment={
                 <InputAdornment position="start">
                   <IconUser stroke={1.5} size="20px" color={grey500} />
@@ -200,10 +201,10 @@ export default function TableToolBar({
         )}
 
         <FormControl sx={{ minWidth: "22%" }}>
-          <InputLabel htmlFor="channel-type-label">类型</InputLabel>
+          <InputLabel htmlFor="channel-type-label">{t('type')}</InputLabel>
           <Select
             id="channel-type-label"
-            label="类型"
+            label={t('type')}
             value={filterName.type}
             name="type"
             onChange={handleFilterName}
@@ -221,7 +222,7 @@ export default function TableToolBar({
             {Object.values(LogType).map((option) => {
               return (
                 <MenuItem key={option.value} value={option.value}>
-                  {option.text}
+                  {t(option.text)}
                 </MenuItem>
               );
             })}

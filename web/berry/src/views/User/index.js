@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { showError, showSuccess } from 'utils/common';
 
@@ -21,6 +22,7 @@ import EditeModal from './component/EditModal';
 
 // ----------------------------------------------------------------------
 export default function Users() {
+  const { t } = useTranslation();
   const [users, setUsers] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [searching, setSearching] = useState(false);
@@ -98,7 +100,7 @@ export default function Users() {
     res = await API.post(url, data);
     const { success, message } = res.data;
     if (success) {
-      showSuccess('操作成功完成！');
+      showSuccess(t('operationCompletedSuccessfully'));
       await loadUsers(activePage);
     } else {
       showError(message);
@@ -140,10 +142,10 @@ export default function Users() {
   return (
     <>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2.5}>
-        <Typography variant="h4">用户</Typography>
+        <Typography variant="h4">{t('user')}</Typography>
 
         <Button variant="contained" color="primary" startIcon={<IconPlus />} onClick={() => handleOpenModal(0)}>
-          新建用户
+          {t('createUser')}
         </Button>
       </Stack>
       <Card>
@@ -151,7 +153,7 @@ export default function Users() {
           <TableToolBar
             filterName={searchKeyword}
             handleFilterName={handleSearchKeyword}
-            placeholder={'搜索用户的ID，用户名，显示名称，以及邮箱地址...'}
+            placeholder={t('searchUserByIdUsernameDisplayNameEmail')}
           />
         </Box>
         <Toolbar
@@ -166,7 +168,7 @@ export default function Users() {
           <Container>
             <ButtonGroup variant="outlined" aria-label="outlined small primary button group" sx={{marginBottom: 2}}>
               <Button onClick={handleRefresh} startIcon={<IconRefresh width={'18px'} />}>
-                刷新
+                {t('refresh')}
               </Button>
             </ButtonGroup>
           </Container>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
@@ -15,6 +15,7 @@ import Logo from 'ui-component/Logo';
 const ResetPassword = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+  const { t } = useTranslation();
 
   return (
     <AuthWrapper>
@@ -34,7 +35,8 @@ const ResetPassword = () => {
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
                           <Typography color={theme.palette.primary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                            密码重置确认
+                            
+                            {t('passwordResetConfirmation')}
                           </Typography>
                         </Stack>
                       </Grid>
@@ -49,7 +51,8 @@ const ResetPassword = () => {
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
                       <Typography component={Link} to="/login" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                        登录
+                        
+                        {t('login')}
                       </Typography>
                     </Grid>
                   </Grid>

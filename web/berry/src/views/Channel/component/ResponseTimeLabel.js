@@ -2,11 +2,13 @@ import PropTypes from 'prop-types';
 import Label from 'ui-component/Label';
 import Tooltip from '@mui/material/Tooltip';
 import { timestamp2string } from 'utils/common';
+import { useTranslation } from 'react-i18next';
 
 const ResponseTimeLabel = ({ test_time, response_time, handle_action }) => {
+  const { t } = useTranslation();
   let color = 'default';
   let time = response_time / 1000;
-  time = time.toFixed(2) + ' 秒';
+  time = time.toFixed(2) + t('seconds');
 
   if (response_time === 0) {
     color = 'default';
@@ -21,15 +23,15 @@ const ResponseTimeLabel = ({ test_time, response_time, handle_action }) => {
   }
   let title = (
     <>
-      点击测速
+      {t('clickToTestSpeed')}
       <br />
-      {test_time != 0 ? '上次测速时间：' + timestamp2string(test_time) : '未测试'}
+      {test_time != 0 ? t('lastTestTime') + timestamp2string(test_time) : t('notTested')}
     </>
   );
 
   return (
     <Tooltip title={title} placement="top" onClick={handle_action}>
-      <Label color={color}> {response_time == 0 ? '未测试' : time} </Label>
+      <Label color={color}> {response_time == 0 ? t('notTested') : time} </Label>
     </Tooltip>
   );
 };

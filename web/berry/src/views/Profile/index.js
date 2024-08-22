@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import UserCard from 'ui-component/cards/UserCard';
 import {
   Card,
@@ -46,6 +47,7 @@ export default function Profile() {
   const [openWechat, setOpenWechat] = useState(false);
   const [openEmail, setOpenEmail] = useState(false);
   const status = useSelector((state) => state.siteInfo);
+  const { t } = useTranslation();
 
   const handleWechatOpen = () => {
     setOpenWechat(true);
@@ -76,7 +78,7 @@ export default function Profile() {
       const res = await API.get(`/api/oauth/wechat/bind?code=${code}`);
       const { success, message } = res.data;
       if (success) {
-        showSuccess('微信账户绑定成功！');
+        showSuccess(t('wechatAccountBindingSuccess'));
       }
       return { success, message };
     } catch (err) {
@@ -90,7 +92,7 @@ export default function Profile() {
     const { success, message, data } = res.data;
     if (success) {
       setInputs((inputs) => ({ ...inputs, access_token: data }));
-      copy(data, '访问令牌');
+      copy(data, t('accessToken'));
     } else {
       showError(message);
     }
@@ -104,7 +106,7 @@ export default function Profile() {
       const res = await API.put(`/api/user/self`, inputs);
       const { success, message } = res.data;
       if (success) {
-        showSuccess('用户信息更新成功！');
+        showSuccess(t('userInfoUpdateSuccess'));
       } else {
         showError(message);
       }
@@ -130,89 +132,89 @@ export default function Profile() {
           <Stack spacing={2}>
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={2} sx={{ paddingBottom: '20px' }}>
               <Label variant="ghost" color={inputs.wechat_id ? 'primary' : 'default'}>
-                <IconBrandWechat /> {inputs.wechat_id || '未绑定'}
+                <IconBrandWechat /> {inputs.wechat_id || t('notBound')}
               </Label>
               <Label variant="ghost" color={inputs.github_id ? 'primary' : 'default'}>
-                <IconBrandGithub /> {inputs.github_id || '未绑定'}
+                <IconBrandGithub /> {inputs.github_id || t('notBound')}
               </Label>
               <Label variant="ghost" color={inputs.email ? 'primary' : 'default'}>
-                <IconMail /> {inputs.email || '未绑定'}
+                <IconMail /> {inputs.email || t('notBound')}
               </Label>
               <Label variant="ghost" color={inputs.lark_id ? 'primary' : 'default'}>
-                <SvgIcon component={Lark} inheritViewBox="0 0 24 24" /> {inputs.lark_id || '未绑定'}
+                <SvgIcon component={Lark} inheritViewBox={true} viewBox={'0 0 24 24'}/> {inputs.lark_id || t('notBound')}
               </Label>
             </Stack>
-            <SubCard title="个人信息">
+            <SubCard title={t('personalInfo')}>
               <Grid container spacing={2}>
                 <Grid xs={12}>
                   <FormControl fullWidth variant="outlined">
-                    <InputLabel htmlFor="username">用户名</InputLabel>
+                    <InputLabel htmlFor="username">{t('username')}</InputLabel>
                     <OutlinedInput
                       id="username"
-                      label="用户名"
+                      label={t('username')}
                       type="text"
                       value={inputs.username || ''}
                       onChange={handleInputChange}
                       name="username"
-                      placeholder="请输入用户名"
+                      placeholder={t('enterUsername')}
                     />
                   </FormControl>
                 </Grid>
                 <Grid xs={12}>
                   <FormControl fullWidth variant="outlined">
-                    <InputLabel htmlFor="password">密码</InputLabel>
+                    <InputLabel htmlFor="password">{t('password')}</InputLabel>
                     <OutlinedInput
                       id="password"
-                      label="密码"
+                      label={t('password')}
                       type="password"
                       value={inputs.password || ''}
                       onChange={handleInputChange}
                       name="password"
-                      placeholder="请输入密码"
+                      placeholder={t('enterPassword')}
                     />
                   </FormControl>
                 </Grid>
                 <Grid xs={12}>
                   <FormControl fullWidth variant="outlined">
-                    <InputLabel htmlFor="display_name">显示名称</InputLabel>
+                    <InputLabel htmlFor="display_name">{t('displayName')}</InputLabel>
                     <OutlinedInput
                       id="display_name"
-                      label="显示名称"
+                      label={t('displayName')}
                       type="text"
                       value={inputs.display_name || ''}
                       onChange={handleInputChange}
                       name="display_name"
-                      placeholder="请输入显示名称"
+                      placeholder={t('enterDisplayName')}
                     />
                   </FormControl>
                 </Grid>
                 <Grid xs={12}>
                   <Button variant="contained" color="primary" onClick={submit}>
-                    提交
+                    {t('submit')}
                   </Button>
                 </Grid>
               </Grid>
             </SubCard>
-            <SubCard title="账号绑定">
+            <SubCard title={t('accountBinding')}>
               <Grid container spacing={2}>
                 {status.wechat_login && !inputs.wechat_id && (
                   <Grid xs={12} md={4}>
                     <Button variant="contained" onClick={handleWechatOpen}>
-                      绑定微信账号
+                      {t('bindWechatAccount')}
                     </Button>
                   </Grid>
                 )}
                 {status.github_oauth && !inputs.github_id && (
                   <Grid xs={12} md={4}>
                     <Button variant="contained" onClick={() => onGitHubOAuthClicked(status.github_client_id, true)}>
-                      绑定 GitHub 账号
+                      {t('bindGitHubAccount')}
                     </Button>
                   </Grid>
                 )}
                 {status.lark_client_id && !inputs.lark_id && (
                   <Grid xs={12} md={4}>
                     <Button variant="contained" onClick={() => onLarkOAuthClicked(status.lark_client_id)}>
-                      绑定 飞书 账号
+                      {t('bindFeishuAccount')}
                     </Button>
                   </Grid>
                 )}
@@ -223,7 +225,7 @@ export default function Profile() {
                       setOpenEmail(true);
                     }}
                   >
-                    {inputs.email ? '更换邮箱' : '绑定邮箱'}
+                    {inputs.email ? t('changeEmail') : t('bindEmail')}
                   </Button>
                   {turnstileEnabled ? (
                     <Turnstile
@@ -238,22 +240,22 @@ export default function Profile() {
                 </Grid>
               </Grid>
             </SubCard>
-            <SubCard title="其他">
+            <SubCard title={t('other')}>
               <Grid container spacing={2}>
                 <Grid xs={12}>
-                  <Alert severity="info">注意，此处生成的令牌用于系统管理，而非用于请求 OpenAI 相关的服务，请知悉。</Alert>
+                  <Alert severity="info">{t('tipsOne')}</Alert>
                 </Grid>
                 {inputs.access_token && (
                   <Grid xs={12}>
                     <Alert severity="error">
-                      你的访问令牌是: <b>{inputs.access_token}</b> <br />
-                      请妥善保管。如有泄漏，请立即重置。
+                    {t('yourAccessTokenIs')} <b>{inputs.access_token}</b> <br />
+                    {t('keepItSafe')}
                     </Alert>
                   </Grid>
                 )}
                 <Grid xs={12}>
                   <Button variant="contained" onClick={generateAccessToken}>
-                    {inputs.access_token ? '重置访问令牌' : '生成访问令牌'}
+                    {inputs.access_token ? t('resetAccessToken') : t('generateAccessToken')}
                   </Button>
                 </Grid>
 
@@ -265,7 +267,7 @@ export default function Profile() {
                       setShowAccountDeleteModal(true);
                     }}
                   >
-                    删除帐号
+                    {t('deleteAccount')}
                   </Button>
                 </Grid>
               </Grid>
@@ -275,19 +277,19 @@ export default function Profile() {
       </UserCard>
       <Dialog open={showAccountDeleteModal} onClose={() => setShowAccountDeleteModal(false)} maxWidth={'md'}>
         <DialogTitle sx={{ margin: '0px', fontWeight: 500, lineHeight: '1.55556', padding: '24px', fontSize: '1.125rem' }}>
-          危险操作
+          {t('dangerousOperation')}
         </DialogTitle>
         <Divider />
-        <DialogContent>您正在删除自己的帐户，将清空所有数据且不可恢复</DialogContent>
+        <DialogContent>{t('dangerTips')}</DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowAccountDeleteModal(false)}>取消</Button>
+          <Button onClick={() => setShowAccountDeleteModal(false)}>{t('cancel')}</Button>
           <Button
             sx={{ color: 'error.main' }}
             onClick={async () => {
               setShowAccountDeleteModal(false);
             }}
           >
-            确定
+            {t('confirm')}
           </Button>
         </DialogActions>
       </Dialog>

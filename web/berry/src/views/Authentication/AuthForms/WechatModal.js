@@ -5,24 +5,26 @@ import { Dialog, DialogTitle, DialogContent, TextField, Button, Typography, Grid
 import { Formik, Form, Field } from 'formik';
 import { showError } from 'utils/common';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 
 const validationSchema = Yup.object().shape({
   code: Yup.string().required('验证码不能为空')
 });
 
 const WechatModal = ({ open, handleClose, wechatLogin, qrCode }) => {
+  const { t } = useTranslation();
   const handleSubmit = (values) => {
     const { success, message } = wechatLogin(values.code);
     if (success) {
       handleClose();
     } else {
-      showError(message || '未知错误');
+      showError(message || t('unknownError'));
     }
   };
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>微信验证码登录</DialogTitle>
+      <DialogTitle>{t('wechatVerificationCodeLogin')}</DialogTitle>
       <DialogContent>
         <Grid container direction="column" alignItems="center">
           <img src={qrCode} alt="二维码" style={{ maxWidth: '300px', maxHeight: '300px', width: 'auto', height: 'auto' }} />
@@ -31,7 +33,8 @@ const WechatModal = ({ open, handleClose, wechatLogin, qrCode }) => {
             color="text.secondary"
             style={{ marginTop: '10px', textAlign: 'center', wordWrap: 'break-word', maxWidth: '300px' }}
           >
-            请使用微信扫描二维码关注公众号，输入「验证码」获取验证码（三分钟内有效）
+            
+            {t('officialWechatVal')}
           </Typography>
           <Formik initialValues={{ code: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
             {({ errors, touched }) => (
@@ -48,7 +51,8 @@ const WechatModal = ({ open, handleClose, wechatLogin, qrCode }) => {
                 </Grid>
                 <Grid item xs={12}>
                   <Button type="submit" fullWidth>
-                    提交
+                    
+                    {t('submit')}
                   </Button>
                 </Grid>
               </Form>

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Popover,
@@ -26,6 +27,7 @@ export default function RedemptionTableRow({ item, manageRedemption, handleOpenM
   const [open, setOpen] = useState(null);
   const [openDelete, setOpenDelete] = useState(false);
   const [statusSwitch, setStatusSwitch] = useState(item.status);
+  const { t } = useTranslation();
 
   const handleDeleteOpen = () => {
     handleCloseMenu();
@@ -67,7 +69,7 @@ export default function RedemptionTableRow({ item, manageRedemption, handleOpenM
         <TableCell>
           {item.status !== 1 && item.status !== 2 ? (
             <Label variant="filled" color={item.status === 3 ? 'success' : 'orange'}>
-              {item.status === 3 ? '已使用' : '未知'}
+              {item.status === 3 ? t('used') : t('unknown')}
             </Label>
           ) : (
             <TableSwitch id={`switch-${item.id}`} checked={statusSwitch === 1} onChange={handleStatus} />
@@ -76,17 +78,17 @@ export default function RedemptionTableRow({ item, manageRedemption, handleOpenM
 
         <TableCell>{renderQuota(item.quota)}</TableCell>
         <TableCell>{timestamp2string(item.created_time)}</TableCell>
-        <TableCell>{item.redeemed_time ? timestamp2string(item.redeemed_time) : '尚未兑换'}</TableCell>
+        <TableCell>{item.redeemed_time ? timestamp2string(item.redeemed_time) : t('notRedeemed')}</TableCell>
         <TableCell>
           <Stack direction="row" spacing={1}>
             <Button
               variant="contained"
               color="primary"
               onClick={() => {
-                copy(item.key, '兑换码');
+                copy(item.key, t('redemptionCode'));
               }}
             >
-              复制
+              {t('copy')}
             </Button>
             <IconButton onClick={handleOpenMenu} sx={{ color: 'rgb(99, 115, 129)' }}>
               <IconDotsVertical />
@@ -114,23 +116,23 @@ export default function RedemptionTableRow({ item, manageRedemption, handleOpenM
           }}
         >
           <IconEdit style={{ marginRight: '16px' }} />
-          编辑
+          {t('edit')}
         </MenuItem>
         <MenuItem onClick={handleDeleteOpen} sx={{ color: 'error.main' }}>
           <IconTrash style={{ marginRight: '16px' }} />
-          删除
+          {t('delete')}
         </MenuItem>
       </Popover>
 
       <Dialog open={openDelete} onClose={handleDeleteClose}>
-        <DialogTitle>删除兑换码</DialogTitle>
+        <DialogTitle>{t('deleteRedemptionCode')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>是否删除兑换码 {item.name}？</DialogContentText>
+          <DialogContentText>{t('confirmDeleteRedemptionCode')} {item.name}？</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteClose}>关闭</Button>
+          <Button onClick={handleDeleteClose}>{t('close')}</Button>
           <Button onClick={handleDelete} sx={{ color: 'error.main' }} autoFocus>
-            删除
+            {t('delete')}
           </Button>
         </DialogActions>
       </Dialog>

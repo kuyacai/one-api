@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-
+import { useTranslation } from 'react-i18next';
 import { showInfo, showError, renderNumber } from "utils/common";
 import { API } from "utils/api";
 import { CHANNEL_OPTIONS } from "constants/ChannelConstants";
@@ -36,6 +36,7 @@ export default function ChannelTableRow({
   handleOpenModal,
   setModalChannelId,
 }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(null);
   const [openDelete, setOpenDelete] = useState(false);
   const [statusSwitch, setStatusSwitch] = useState(item.status);
@@ -78,7 +79,7 @@ export default function ChannelTableRow({
     }
 
     if (currentValue < 0) {
-      showError("优先级不能小于 0");
+      showError(t('priorityCannotBeLessThanZero'));
       return;
     }
 
@@ -93,7 +94,7 @@ export default function ChannelTableRow({
         test_time: Date.now() / 1000,
         response_time: time * 1000,
       });
-      showInfo(`渠道 ${item.name} 测试成功，耗时 ${time.toFixed(2)} 秒。`);
+        showInfo(t('channel') + item.name + t('testSuccessfulTimeTaken') + time.toFixed(2) + t('seconds'));
     }
   };
 
@@ -103,7 +104,7 @@ export default function ChannelTableRow({
     if (success) {
       setItemBalance(balance);
 
-      showInfo(`余额更新成功！`);
+      showInfo(t('balanceUpdateSuccessful'));
     } else {
       showError(message);
     }
@@ -130,7 +131,7 @@ export default function ChannelTableRow({
         <TableCell>
           {!CHANNEL_OPTIONS[item.type] ? (
             <Label color="error" variant="outlined">
-              未知
+              {t('unknown')}
             </Label>
           ) : (
             <Label color={CHANNEL_OPTIONS[item.type].color} variant="outlined">
@@ -144,13 +145,13 @@ export default function ChannelTableRow({
             title={(() => {
               switch (statusSwitch) {
                 case 1:
-                  return "已启用";
+                  return t('enabled');
                 case 2:
-                  return "本渠道被手动禁用";
+                  return t('channelManuallyDisabled');
                 case 3:
-                  return "本渠道被程序自动禁用";
+                  return t('channelAutomaticallyDisabled');
                 default:
-                  return "未知";
+                  return t('unknown');
               }
             })()}
             placement="top"
@@ -173,7 +174,7 @@ export default function ChannelTableRow({
         <TableCell>{renderNumber(item.used_quota)}</TableCell>
         <TableCell>
           <Tooltip
-            title={"点击更新余额"}
+            title={t('clickToUpdateBalance')}
             placement="top"
             onClick={updateChannelBalance}
           >
@@ -185,7 +186,7 @@ export default function ChannelTableRow({
             id={`priority-${item.id}`}
             onBlur={handlePriority}
             type="number"
-            label="优先级"
+            label={t('priority')}
             variant="standard"
             defaultValue={item.priority}
             inputProps={{ min: "0" }}
@@ -221,23 +222,23 @@ export default function ChannelTableRow({
           }}
         >
           <IconEdit style={{ marginRight: "16px" }} />
-          编辑
+          {t('edit')}
         </MenuItem>
         <MenuItem onClick={handleDeleteOpen} sx={{ color: "error.main" }}>
           <IconTrash style={{ marginRight: "16px" }} />
-          删除
+          {t('delete')}
         </MenuItem>
       </Popover>
 
       <Dialog open={openDelete} onClose={handleDeleteClose}>
-        <DialogTitle>删除渠道</DialogTitle>
+        <DialogTitle>{t('deleteChannel')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>是否删除渠道 {item.name}？</DialogContentText>
+          <DialogContentText>{t('confirmDeleteChannel')} {item.name}？</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteClose}>关闭</Button>
+          <Button onClick={handleDeleteClose}>{t('close')}</Button>
           <Button onClick={handleDelete} sx={{ color: "error.main" }} autoFocus>
-            删除
+            {t('delete')}
           </Button>
         </DialogActions>
       </Dialog>

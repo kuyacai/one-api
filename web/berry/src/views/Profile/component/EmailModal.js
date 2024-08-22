@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import React from "react";
@@ -27,6 +28,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const EmailModal = ({ open, handleClose, turnstileToken }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const [countdown, setCountdown] = useState(30);
   const [disableButton, setDisableButton] = useState(false);
@@ -41,7 +43,7 @@ const EmailModal = ({ open, handleClose, turnstileToken }) => {
     );
     const { success, message } = res.data;
     if (success) {
-      showSuccess("邮箱账户绑定成功！");
+      showSuccess(t('emailAccountBindingSuccess'));
       setSubmitting(false);
       setStatus({ success: true });
       handleClose();
@@ -68,11 +70,11 @@ const EmailModal = ({ open, handleClose, turnstileToken }) => {
   const handleSendCode = async (email) => {
     setDisableButton(true);
     if (email === "") {
-      showError("请输入邮箱");
+      showError(t('pleaseEnterYourEmail'));
       return;
     }
     if (turnstileToken === "") {
-      showError("请稍后几秒重试，Turnstile 正在检查用户环境！");
+      showError(t('checkingUserEnvironment'));
       return;
     }
     setLoading(true);
@@ -89,7 +91,7 @@ const EmailModal = ({ open, handleClose, turnstileToken }) => {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>绑定邮箱</DialogTitle>
+      <DialogTitle>{t('bindEmail')}</DialogTitle>
       <DialogContent>
         <Grid container direction="column" alignItems="center">
           <Formik
@@ -132,8 +134,8 @@ const EmailModal = ({ open, handleClose, turnstileToken }) => {
                           disabled={disableButton || loading}
                         >
                           {disableButton
-                            ? `重新发送(${countdown})`
-                            : "获取验证码"}
+                              ? `${t('resend')} (${countdown})`
+                              : t('getVerificationCode')}
                         </Button>
                       </InputAdornment>
                     }
@@ -154,7 +156,7 @@ const EmailModal = ({ open, handleClose, turnstileToken }) => {
                   sx={{ ...theme.typography.customInput }}
                 >
                   <InputLabel htmlFor="email_verification_code">
-                    验证码
+                    {t('verificationCode')}
                   </InputLabel>
                   <OutlinedInput
                     id="email_verification_code"
@@ -173,7 +175,7 @@ const EmailModal = ({ open, handleClose, turnstileToken }) => {
                     )}
                 </FormControl>
                 <DialogActions>
-                  <Button onClick={handleClose}>取消</Button>
+                  <Button onClick={handleClose}>{t('cancel')}</Button>
                   <Button
                     disableElevation
                     disabled={loading}
@@ -181,7 +183,7 @@ const EmailModal = ({ open, handleClose, turnstileToken }) => {
                     variant="contained"
                     color="primary"
                   >
-                    提交
+                    {t('submit')}
                   </Button>
                 </DialogActions>
               </form>

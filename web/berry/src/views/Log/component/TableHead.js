@@ -1,20 +1,21 @@
 import PropTypes from 'prop-types';
 import { TableCell, TableHead, TableRow } from '@mui/material';
-
+import { useTranslation } from 'react-i18next';
 const LogTableHead = ({ userIsAdmin }) => {
+  const { t } = useTranslation();
   return (
     <TableHead>
       <TableRow>
-        <TableCell>时间</TableCell>
-        {userIsAdmin && <TableCell>渠道</TableCell>}
-        {userIsAdmin && <TableCell>用户</TableCell>}
-        <TableCell>令牌</TableCell>
-        <TableCell>类型</TableCell>
-        <TableCell>模型</TableCell>
-        <TableCell>提示</TableCell>
-        <TableCell>补全</TableCell>
-        <TableCell>额度</TableCell>
-        <TableCell>详情</TableCell>
+        <TableCell>{t('time')}</TableCell>
+        {userIsAdmin && <TableCell>{t('channel')}</TableCell>}
+        {userIsAdmin && <TableCell>{t('user')}</TableCell>}
+        <TableCell>{t('token')}</TableCell>
+        <TableCell>{t('type')}</TableCell>
+        <TableCell>{t('model')}</TableCell>
+        <TableCell>{t('prompt')}</TableCell>
+        <TableCell>{t('completion')}</TableCell>
+        <TableCell>{t('quota')}</TableCell>
+        <TableCell>{t('details')}</TableCell>
       </TableRow>
     </TableHead>
   );

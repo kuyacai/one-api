@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+
 import { gridSpacing } from 'store/constant';
 import StatisticalLineChartCard from './component/StatisticalLineChartCard';
 import StatisticalBarChart from './component/StatisticalBarChart';
@@ -9,6 +11,7 @@ import { showError, calculateQuota, renderNumber } from 'utils/common';
 import UserCard from 'ui-component/cards/UserCard';
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const [isLoading, setLoading] = useState(true);
   const [statisticalData, setStatisticalData] = useState([]);
   const [requestChart, setRequestChart] = useState(null);
@@ -18,6 +21,7 @@ const Dashboard = () => {
 
   const userDashboard = async () => {
     const res = await API.get('/api/user/dashboard');
+    
     const { success, message, data } = res.data;
     if (success) {
       if (data) {
@@ -55,7 +59,7 @@ const Dashboard = () => {
           <Grid item lg={4} xs={12}>
             <StatisticalLineChartCard
               isLoading={isLoading}
-              title="今日请求量"
+              title={t('todayRequests')}
               chartData={requestChart?.chartData}
               todayValue={requestChart?.todayValue}
             />
@@ -63,7 +67,7 @@ const Dashboard = () => {
           <Grid item lg={4} xs={12}>
             <StatisticalLineChartCard
               isLoading={isLoading}
-              title="今日消费"
+              title={t('todayConsumption')}
               chartData={quotaChart?.chartData}
               todayValue={quotaChart?.todayValue}
             />
@@ -71,7 +75,7 @@ const Dashboard = () => {
           <Grid item lg={4} xs={12}>
             <StatisticalLineChartCard
               isLoading={isLoading}
-              title="今日 token"
+              title={t('todayToken')}
               chartData={tokenChart?.chartData}
               todayValue={tokenChart?.todayValue}
             />
@@ -87,22 +91,22 @@ const Dashboard = () => {
             <UserCard>
               <Grid container spacing={gridSpacing} justifyContent="center" alignItems="center" paddingTop={'20px'}>
                 <Grid item xs={4}>
-                  <Typography variant="h4">余额：</Typography>
+                  <Typography variant="h4">{t('balance')}</Typography>
                 </Grid>
                 <Grid item xs={8}>
-                  <Typography variant="h3"> {users?.quota ? '$' + calculateQuota(users.quota) : '未知'}</Typography>
+                  <Typography variant="h3"> {users?.quota ? '$' + calculateQuota(users.quota) : t('unknown')}</Typography>
                 </Grid>
                 <Grid item xs={4}>
-                  <Typography variant="h4">已使用：</Typography>
+                  <Typography variant="h4">{t('used')}</Typography>
                 </Grid>
                 <Grid item xs={8}>
-                  <Typography variant="h3"> {users?.used_quota ? '$' + calculateQuota(users.used_quota) : '未知'}</Typography>
+                  <Typography variant="h3"> {users?.used_quota ? '$' + calculateQuota(users.used_quota) : t('unknown')}</Typography>
                 </Grid>
                 <Grid item xs={4}>
-                  <Typography variant="h4">调用次数：</Typography>
+                  <Typography variant="h4">{t('callCount')}</Typography>
                 </Grid>
                 <Grid item xs={8}>
-                  <Typography variant="h3"> {users?.request_count || '未知'}</Typography>
+                  <Typography variant="h3"> {users?.request_count || t('unknown')}</Typography>
                 </Grid>
               </Grid>
             </UserCard>

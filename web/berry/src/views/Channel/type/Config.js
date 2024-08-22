@@ -1,3 +1,6 @@
+
+import i18n from 'i18next';
+
 const defaultConfig = {
   input: {
     name: '',
@@ -11,26 +14,25 @@ const defaultConfig = {
     config: {}
   },
   inputLabel: {
-    name: '渠道名称',
-    type: '渠道类型',
-    base_url: '渠道API地址',
-    key: '密钥',
-    other: '其他参数',
-    models: '模型',
-    model_mapping: '模型映射关系',
-    groups: '用户组',
+    name: i18n.t('channelName'),
+    type: i18n.t('channelType'),
+    base_url: i18n.t('channelAPIAddress'),
+    key: i18n.t('key'),
+    other: i18n.t('otherParams'),
+    models: i18n.t('models'),
+    model_mapping: i18n.t('modelMapping'),
+    groups: i18n.t('userGroups'),
     config: null
   },
   prompt: {
-    type: '请选择渠道类型',
-    name: '请为渠道命名',
-    base_url: '可空，请输入中转API地址，例如通过cloudflare中转',
-    key: '请输入渠道对应的鉴权密钥',
+    type: i18n.t('selectChannelType'),
+    name: i18n.t('nameChannel'),
+    base_url: i18n.t('optionalAPIAddress'),
+    key: i18n.t('enterAuthKey'),
     other: '',
-    models: '请选择该渠道所支持的模型',
-    model_mapping:
-      '请输入要修改的模型映射关系，格式为：api请求模型ID:实际转发给渠道的模型ID，使用JSON数组表示，例如：{"gpt-3.5": "gpt-35"}',
-    groups: '请选择该渠道所支持的用户组',
+    models: i18n.t('selectSupportedModels'),
+    model_mapping: i18n.t('enterModelMapping'),
+    groups: i18n.t('selectUserGroups'),
     config: null
   },
   modelGroup: 'openai'
@@ -39,12 +41,12 @@ const defaultConfig = {
 const typeConfig = {
   3: {
     inputLabel: {
-      base_url: 'AZURE_OPENAI_ENDPOINT',
-      other: '默认 API 版本'
+      base_url: i18n.t('AZURE_OPENAI_ENDPOINT'),
+      other: i18n.t('defaultAPIVersion')
     },
     prompt: {
-      base_url: '请填写AZURE_OPENAI_ENDPOINT',
-      other: '请输入默认API版本，例如：2024-03-01-preview'
+      base_url: i18n.t('pleaseFillInAZURE_OPENAI_ENDPOINT'),
+      other: i18n.t('pleaseEnterDefaultAPIVersion')
     }
   },
   11: {
@@ -64,7 +66,7 @@ const typeConfig = {
       models: ['ERNIE-Bot', 'ERNIE-Bot-turbo', 'ERNIE-Bot-4', 'Embedding-V1']
     },
     prompt: {
-      key: '按照如下格式输入：APIKey|SecretKey'
+      key: i18n.t('enterInTheFollowingFormatAPIKeySecretKey')
     },
     modelGroup: 'baidu'
   },
@@ -76,26 +78,26 @@ const typeConfig = {
   },
   17: {
     inputLabel: {
-      other: '插件参数'
+      other: i18n.t('pluginParameters')
     },
     input: {
       models: ['qwen-turbo', 'qwen-plus', 'qwen-max', 'qwen-max-longcontext', 'text-embedding-v1']
     },
     prompt: {
-      other: '请输入插件参数，即 X-DashScope-Plugin 请求头的取值'
+      other: i18n.t('pleaseEnterPluginParameters')
     },
     modelGroup: 'ali'
   },
   18: {
     inputLabel: {
-      other: '版本号'
+      other: i18n.t('versionNumber')
     },
     input: {
       models: ['SparkDesk', 'SparkDesk-v1.1', 'SparkDesk-v2.1', 'SparkDesk-v3.1', 'SparkDesk-v3.5', 'SparkDesk-v4.0']
     },
     prompt: {
-      key: '按照如下格式输入：APPID|APISecret|APIKey',
-      other: '请输入版本号，例如：v3.1'
+      key: i18n.t('enterInTheFollowingFormatAPPIDAPISecretAPIKey'),
+      other: i18n.t('pleaseEnterVersionNumber')
     },
     modelGroup: 'xunfei'
   },
@@ -107,7 +109,7 @@ const typeConfig = {
   },
   22: {
     prompt: {
-      key: '按照如下格式输入：APIKey-AppId，例如：fastgpt-0sp2gtvfdgyi4k30jwlgwf1i-64f335d84283f05518e9e041'
+      key: i18n.t('enterInTheFollowingFormatAPIKeyAppId')
     }
   },
   23: {
@@ -115,19 +117,19 @@ const typeConfig = {
       models: ['hunyuan']
     },
     prompt: {
-      key: '按照如下格式输入：AppId|SecretId|SecretKey'
+      key: i18n.t('enterInTheFollowingFormatAppIdSecretIdSecretKey')
     },
     modelGroup: 'tencent'
   },
   24: {
     inputLabel: {
-      other: '版本号'
+      other: i18n.t('versionNumber')
     },
     input: {
       models: ['gemini-pro']
     },
     prompt: {
-      other: '请输入版本号，例如：v1'
+      other: i18n.t('pleaseEnterVersionNumber')
     },
     modelGroup: 'google gemini'
   },
@@ -162,67 +164,69 @@ const typeConfig = {
     inputLabel: {
       key: '',
       config: {
-        region: 'Region',
-        ak: 'Access Key',
-        sk: 'Secret Key'
+        region: i18n.t('Region'),
+        ak: i18n.t('AccessKey'),
+        sk: i18n.t('SecretKey')
       }
     },
     prompt: {
       key: '',
       config: {
-        region: 'region，e.g. us-west-2',
-        ak: 'AWS IAM Access Key',
-        sk: 'AWS IAM Secret Key'
+        region: i18n.t('regionExample'),
+        ak: i18n.t('AWSIAMAccessKey'),
+        sk: i18n.t('AWSIAMSecretKey')
       }
     },
     modelGroup: 'anthropic'
   },
-  37: {
-    inputLabel: {
-      config: {
-        user_id: 'Account ID'
-      }
-    },
-    prompt: {
-      config: {
-        user_id: '请输入 Account ID，例如：d8d7c61dbc334c32d3ced580e4bf42b4'
-      }
-    },
-    modelGroup: 'Cloudflare'
-  },
   34: {
     inputLabel: {
       config: {
-        user_id: 'User ID'
+        user_id: i18n.t('UserID')
       }
     },
     prompt: {
-      models: '对于 Coze 而言，模型名称即 Bot ID，你可以添加一个前缀 `bot-`，例如：`bot-123456`',
+      models: i18n.t('forCozeModelNameIsBotID'),
       config: {
-        user_id: '生成该密钥的用户 ID'
+        user_id: i18n.t('userIDGeneratingThisKey')
       }
     },
     modelGroup: 'Coze'
+  },
+  37: {
+    inputLabel: {
+      config: {
+        user_id: i18n.t('AccountID')
+      }
+    },
+    prompt: {
+      config: {
+        user_id: i18n.t('pleaseEnterAccountID')
+      }
+    },
+    modelGroup: 'Cloudflare'
   },
   42: {
     inputLabel: {
       key: '',
       config: {
-        region: 'Vertex AI Region',
-        vertex_ai_project_id: 'Vertex AI Project ID',
-        vertex_ai_adc: 'Google Cloud Application Default Credentials JSON'
+        region: i18n.t('VertexAIRegion'),
+        vertex_ai_project_id: i18n.t('VertexAIProjectID'),
+        vertex_ai_adc: i18n.t('GoogleCloudApplicationDefaultCredentialsJSON')
       }
     },
     prompt: {
       key: '',
       config: {
-        region: 'Vertex AI Region.g. us-east5',
-        vertex_ai_project_id: 'Vertex AI Project ID',
-        vertex_ai_adc: 'Google Cloud Application Default Credentials JSON: https://cloud.google.com/docs/authentication/application-default-credentials'
+        region: i18n.t('VertexAIRegionExample'),
+        vertex_ai_project_id: i18n.t('VertexAIProjectID'),
+        vertex_ai_adc: i18n.t('GoogleCloudApplicationDefaultCredentialsJSONLink')
       }
     },
     modelGroup: 'anthropic'
   },
 };
+
+export default typeConfig;
 
 export { defaultConfig, typeConfig };

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { showError } from 'utils/common';
 
 import Table from '@mui/material/Table';
@@ -20,6 +21,8 @@ import { ITEMS_PER_PAGE } from 'constants';
 import { IconRefresh, IconSearch } from '@tabler/icons-react';
 
 export default function Log() {
+  const { t } = useTranslation();
+
   const originalKeyword = {
     p: 0,
     username: '',
@@ -103,7 +106,7 @@ export default function Log() {
   return (
     <>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2.5}>
-        <Typography variant="h4">日志</Typography>
+        <Typography variant="h4">{t('log')}</Typography>
       </Stack>
       <Card>
         <Box component="form" onSubmit={searchLogs} noValidate sx={{marginTop: 2}}>
@@ -121,11 +124,11 @@ export default function Log() {
           <Container>
             <ButtonGroup variant="outlined" aria-label="outlined small primary button group" sx={{marginBottom: 2}}>
               <Button onClick={handleRefresh} startIcon={<IconRefresh width={'18px'} />}>
-                刷新/清除搜索条件
+                {t('refreshClearSearch')}
               </Button>
 
               <Button onClick={searchLogs} startIcon={<IconSearch width={'18px'} />}>
-                搜索
+                {t('search')}
               </Button>
             </ButtonGroup>
           </Container>

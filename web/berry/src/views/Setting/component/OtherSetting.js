@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import SubCard from 'ui-component/cards/SubCard';
+import { useTranslation } from 'react-i18next';
 import {
     Stack,
     FormControl,
@@ -20,6 +21,7 @@ import { API } from 'utils/api';
 import { marked } from 'marked';
 
 const OtherSetting = () => {
+  const { t } = useTranslation();
   let [inputs, setInputs] = useState({
     Footer: '',
     Notice: '',
@@ -65,7 +67,7 @@ const OtherSetting = () => {
     const { success, message } = res.data;
     if (success) {
       setInputs((inputs) => ({ ...inputs, [key]: value }));
-      showSuccess('保存成功');
+      showSuccess(t('saveSuccess'));
     } else {
       showError(message);
     }
@@ -113,7 +115,7 @@ const OtherSetting = () => {
     const res = await API.get('https://api.github.com/repos/songquanpeng/one-api/releases/latest');
     const { tag_name, body } = res.data;
     if (tag_name === process.env.REACT_APP_VERSION) {
-      showSuccess(`已是最新版本：${tag_name}`);
+      showSuccess(t('latestVersion') + tag_name);
     } else {
       setUpdateData({
         tag_name: tag_name,
@@ -126,11 +128,11 @@ const OtherSetting = () => {
   return (
     <>
       <Stack spacing={2}>
-        <SubCard title="通用设置">
+        <SubCard title={t('generalSettings')}>
           <Grid container spacing={{ xs: 3, sm: 2, md: 4 }}>
             <Grid xs={12}>
               <Button variant="contained" onClick={checkUpdate}>
-                检查更新
+                {t('checkForUpdates')}
               </Button>
             </Grid>
             <Grid xs={12}>
@@ -139,79 +141,79 @@ const OtherSetting = () => {
                   multiline
                   maxRows={15}
                   id="Notice"
-                  label="公告"
+                  label={t('announcement')}
                   value={inputs.Notice}
                   name="Notice"
                   onChange={handleInputChange}
                   minRows={10}
-                  placeholder="在此输入新的公告内容，支持 Markdown & HTML 代码"
+                  placeholder={t('enterNewAnnouncement')}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitNotice}>
-                保存公告
+                {t('saveAnnouncement')}
               </Button>
             </Grid>
           </Grid>
         </SubCard>
-        <SubCard title="个性化设置">
+        <SubCard title={t('personalizationSettings')}>
           <Grid container spacing={{ xs: 3, sm: 2, md: 4 }}>
             <Grid xs={12}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="SystemName">系统名称</InputLabel>
+                <InputLabel htmlFor="SystemName">{t('systemName')}</InputLabel>
                 <OutlinedInput
                   id="SystemName"
                   name="SystemName"
                   value={inputs.SystemName || ''}
                   onChange={handleInputChange}
-                  label="系统名称"
-                  placeholder="在此输入系统名称"
+                  label={t('systemName')}
+                  placeholder={t('enterSystemName')}
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitSystemName}>
-                设置系统名称
+                {t('setSystemName')}
               </Button>
             </Grid>
             <Grid xs={12}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="Theme">主题名称</InputLabel>
+                <InputLabel htmlFor="Theme">{t('themeName')}</InputLabel>
                 <OutlinedInput
                     id="Theme"
                     name="Theme"
                     value={inputs.Theme || ''}
                     onChange={handleInputChange}
-                    label="主题名称"
-                    placeholder="请输入主题名称"
+                    label={t('themeName')}
+                    placeholder={t('enterThemeName')}
                     disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitTheme}>
-                设置主题（重启生效）
+                {t('setTheme')}
               </Button>
             </Grid>
             <Grid xs={12}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="Logo">Logo 图片地址</InputLabel>
+                <InputLabel htmlFor="Logo">{t('logoImageUrl')}</InputLabel>
                 <OutlinedInput
                   id="Logo"
                   name="Logo"
                   value={inputs.Logo || ''}
                   onChange={handleInputChange}
-                  label="Logo 图片地址"
-                  placeholder="在此输入Logo 图片地址"
+                  label={t('logoImageUrl')}
+                  placeholder={t('enterLogoImageUrl')}
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitLogo}>
-                设置 Logo
+                {t('setLogo')}
               </Button>
             </Grid>
             <Grid xs={12}>
@@ -220,18 +222,18 @@ const OtherSetting = () => {
                   multiline
                   maxRows={15}
                   id="HomePageContent"
-                  label="首页内容"
+                  label={t('homepageContent')}
                   value={inputs.HomePageContent}
                   name="HomePageContent"
                   onChange={handleInputChange}
                   minRows={10}
-                  placeholder="在此输入首页内容，支持 Markdown & HTML 代码，设置后首页的状态信息将不再显示。如果输入的是一个链接，则会使用该链接作为 iframe 的 src 属性，这允许你设置任意网页作为首页。"
+                  placeholder={t('homeSettingTips')}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={() => submitOption('HomePageContent')}>
-                保存首页内容
+                {t('saveHomepageContent')}
               </Button>
             </Grid>
             <Grid xs={12}>
@@ -240,23 +242,23 @@ const OtherSetting = () => {
                   multiline
                   maxRows={15}
                   id="About"
-                  label="关于"
+                  label={t('about')}
                   value={inputs.About}
                   name="About"
                   onChange={handleInputChange}
                   minRows={10}
-                  placeholder="在此输入新的关于内容，支持 Markdown & HTML 代码。如果输入的是一个链接，则会使用该链接作为 iframe 的 src 属性，这允许你设置任意网页作为关于页面。"
+                  placeholder={t('aboutSettingTips')}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitAbout}>
-                保存关于
+                {t('saveAbout')}
               </Button>
             </Grid>
             <Grid xs={12}>
               <Alert severity="warning">
-                移除 One API 的版权标识必须首先获得授权，项目维护需要花费大量精力，如果本项目对你有意义，请主动支持本项目。
+              {t('copyrightTips')}
               </Alert>
             </Grid>
             <Grid xs={12}>
@@ -265,18 +267,18 @@ const OtherSetting = () => {
                   multiline
                   maxRows={15}
                   id="Footer"
-                  label="页脚"
+                  label={t('footer')}
                   value={inputs.Footer}
                   name="Footer"
                   onChange={handleInputChange}
                   minRows={10}
-                  placeholder="在此输入新的页脚，留空则使用默认页脚，支持 HTML 代码"
+                  placeholder={t('footerTips')}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitFooter}>
-                设置页脚
+                {t('setFooter')}
               </Button>
             </Grid>
           </Grid>
@@ -284,7 +286,7 @@ const OtherSetting = () => {
       </Stack>
       <Dialog open={showUpdateModal} onClose={() => setShowUpdateModal(false)} fullWidth maxWidth={'md'}>
         <DialogTitle sx={{ margin: '0px', fontWeight: 700, lineHeight: '1.55556', padding: '24px', fontSize: '1.125rem' }}>
-          新版本：{updateData.tag_name}
+        {t('newVersion')}{updateData.tag_name}
         </DialogTitle>
         <Divider />
         <DialogContent>
@@ -292,14 +294,14 @@ const OtherSetting = () => {
           <div dangerouslySetInnerHTML={{ __html: updateData.content }}></div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowUpdateModal(false)}>关闭</Button>
+          <Button onClick={() => setShowUpdateModal(false)}>{t('close')}</Button>
           <Button
             onClick={async () => {
               setShowUpdateModal(false);
               openGitHubRelease();
             }}
           >
-            去GitHub查看
+          {t('goToGitHub')}
           </Button>
         </DialogActions>
       </Dialog>

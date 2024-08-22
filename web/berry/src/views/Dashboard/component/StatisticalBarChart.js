@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { useTranslation } from 'react-i18next';
 // material-ui
 import { Grid, Typography } from '@mui/material';
 
@@ -17,6 +18,7 @@ import { Box } from '@mui/material';
 const StatisticalBarChart = ({ isLoading, chartDatas }) => {
   chartData.options.xaxis.categories = chartDatas.xaxis;
   chartData.series = chartDatas.data;
+  const { t } = useTranslation();
 
   return (
     <>
@@ -28,7 +30,7 @@ const StatisticalBarChart = ({ isLoading, chartDatas }) => {
             <Grid item xs={12}>
               <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item>
-                  <Typography variant="h3">统计</Typography>
+                  <Typography variant="h3">{t('statistics')}</Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -45,7 +47,7 @@ const StatisticalBarChart = ({ isLoading, chartDatas }) => {
                   }}
                 >
                   <Typography variant="h3" color={'#697586'}>
-                    暂无数据
+                    {t('noData')}
                   </Typography>
                 </Box>
               )}

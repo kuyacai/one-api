@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useTheme } from '@mui/material/styles';
@@ -41,6 +42,7 @@ const originInputs = {
 const EditModal = ({ open, redemptiondId, onCancel, onOk }) => {
   const theme = useTheme();
   const [inputs, setInputs] = useState(originInputs);
+  const { t } = useTranslation();
 
   const submit = async (values, { setErrors, setStatus, setSubmitting }) => {
     setSubmitting(true);
@@ -54,9 +56,9 @@ const EditModal = ({ open, redemptiondId, onCancel, onOk }) => {
     const { success, message, data } = res.data;
     if (success) {
       if (values.is_edit) {
-        showSuccess('兑换码更新成功！');
+        showSuccess(t('redemptionCodeUpdateSuccess'));
       } else {
-        showSuccess('兑换码创建成功！');
+        showSuccess(t('redemptionCodeCreateSuccess'));
         if (data.length > 1) {
           let text = '';
           for (let i = 0; i < data.length; i++) {
@@ -96,7 +98,7 @@ const EditModal = ({ open, redemptiondId, onCancel, onOk }) => {
   return (
     <Dialog open={open} onClose={onCancel} fullWidth maxWidth={'md'}>
       <DialogTitle sx={{ margin: '0px', fontWeight: 700, lineHeight: '1.55556', padding: '24px', fontSize: '1.125rem' }}>
-        {redemptiondId ? '编辑兑换码' : '新建兑换码'}
+        {redemptiondId ? t('editRedemptionCode') : t('createNewRedemptionCode')}
       </DialogTitle>
       <Divider />
       <DialogContent>
@@ -104,10 +106,10 @@ const EditModal = ({ open, redemptiondId, onCancel, onOk }) => {
           {({ errors, handleBlur, handleChange, handleSubmit, touched, values, isSubmitting }) => (
             <form noValidate onSubmit={handleSubmit}>
               <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.otherInput }}>
-                <InputLabel htmlFor="channel-name-label">名称</InputLabel>
+                <InputLabel htmlFor="channel-name-label">{t('name')}</InputLabel>
                 <OutlinedInput
                   id="channel-name-label"
-                  label="名称"
+                  label={t('name')}
                   type="text"
                   value={values.name}
                   name="name"
@@ -124,10 +126,10 @@ const EditModal = ({ open, redemptiondId, onCancel, onOk }) => {
               </FormControl>
 
               <FormControl fullWidth error={Boolean(touched.quota && errors.quota)} sx={{ ...theme.typography.otherInput }}>
-                <InputLabel htmlFor="channel-quota-label">额度</InputLabel>
+                <InputLabel htmlFor="channel-quota-label">{t('quota')}</InputLabel>
                 <OutlinedInput
                   id="channel-quota-label"
-                  label="额度"
+                  label={t('quota')}
                   type="number"
                   value={values.quota}
                   name="quota"
@@ -167,9 +169,9 @@ const EditModal = ({ open, redemptiondId, onCancel, onOk }) => {
                 </FormControl>
               )}
               <DialogActions>
-                <Button onClick={onCancel}>取消</Button>
+                <Button onClick={onCancel}>{t('cancel')}</Button>
                 <Button disableElevation disabled={isSubmitting} type="submit" variant="contained" color="primary">
-                  提交
+                  {t('submit')}
                 </Button>
               </DialogActions>
             </form>

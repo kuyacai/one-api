@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { showError, showSuccess, showInfo, loadChannelModels } from 'utils/common';
+import { useTranslation } from 'react-i18next';
 
 import { useTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -24,6 +25,7 @@ import EditeModal from './component/EditModal';
 // ----------------------------------------------------------------------
 // CHANNEL_OPTIONS,
 export default function ChannelPage() {
+  const { t } = useTranslation();
   const [channels, setChannels] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [searching, setSearching] = useState(false);
@@ -113,7 +115,7 @@ export default function ChannelPage() {
     }
     const { success, message } = res.data;
     if (success) {
-      showSuccess('操作成功完成！');
+      showSuccess(t('operationCompletedSuccessfully'));
       if (action === 'delete') {
         await handleRefresh();
       }
@@ -134,7 +136,7 @@ export default function ChannelPage() {
     const res = await API.get(`/api/channel/test`);
     const { success, message } = res.data;
     if (success) {
-      showInfo('已成功开始测试所有渠道，请刷新页面查看结果。');
+      showInfo(t('successfullyStartedTestingAllChannelsPleaseRefreshThePageToSeeTheResults'));
     } else {
       showError(message);
     }
@@ -145,7 +147,7 @@ export default function ChannelPage() {
     const res = await API.delete(`/api/channel/disabled`);
     const { success, message, data } = res.data;
     if (success) {
-      showSuccess(`已删除所有禁用渠道，共计 ${data} 个`);
+      showSuccess( t('successfullyDeletedAllDisabledChannelsTotal')+data );
       await handleRefresh();
     } else {
       showError(message);
@@ -158,7 +160,7 @@ export default function ChannelPage() {
     const res = await API.get(`/api/channel/update_balance`);
     const { success, message } = res.data;
     if (success) {
-      showInfo('已更新完毕所有已启用渠道余额！');
+      showInfo(t('successfullyUpdatedAllEnabledChannelBalances'));
     } else {
       showError(message);
     }
@@ -194,14 +196,14 @@ export default function ChannelPage() {
   return (
     <>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2.5}>
-        <Typography variant="h4">渠道</Typography>
+        <Typography variant="h4">{t('channel')}</Typography>
         <Button variant="contained" color="primary" startIcon={<IconPlus />} onClick={() => handleOpenModal(0)}>
-          新建渠道
+          {t('createChannel')}
         </Button>
       </Stack>
       <Card>
         <Box component="form" onSubmit={searchChannels} noValidate sx={{ marginTop: 2 }}>
-          <TableToolBar filterName={searchKeyword} handleFilterName={handleSearchKeyword} placeholder={'搜索渠道的 ID，名称和密钥 ...'} />
+          <TableToolBar filterName={searchKeyword} handleFilterName={handleSearchKeyword} placeholder={t('searchChannelIDNameAndKey')} />
         </Box>
         <Toolbar
           sx={{
@@ -216,16 +218,16 @@ export default function ChannelPage() {
             {matchUpMd ? (
               <ButtonGroup variant="outlined" aria-label="outlined small primary button group" sx={{ marginBottom: 2 }}>
                 <Button onClick={handleRefresh} startIcon={<IconRefresh width={'18px'} />}>
-                  刷新
+                  {t('refresh')}
                 </Button>
                 <Button onClick={testAllChannels} startIcon={<IconBrandSpeedtest width={'18px'} />}>
-                  测试启用渠道
+                  {t('testEnabledChannels')}
                 </Button>
                 {/*<Button onClick={updateAllChannelsBalance} startIcon={<IconCoinYuan width={'18px'} />}>*/}
                 {/*  更新启用余额*/}
                 {/*</Button>*/}
                 <Button onClick={deleteAllDisabledChannels} startIcon={<IconHttpDelete width={'18px'} />}>
-                  删除禁用渠道
+                  {t('deleteDisabledChannels')}
                 </Button>
               </ButtonGroup>
             ) : (

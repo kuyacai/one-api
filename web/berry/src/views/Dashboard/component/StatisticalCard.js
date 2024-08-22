@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { useTranslation } from 'react-i18next';
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
@@ -43,6 +44,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const StatisticalCard = ({ isLoading }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -79,7 +81,7 @@ const StatisticalCard = ({ isLoading }) => {
                   }
                   secondary={
                     <Typography variant="subtitle2" sx={{ color: 'primary.light', mt: 0.25 }}>
-                      Total Income
+                      {t('totalRevenue')}
                     </Typography>
                   }
                 />

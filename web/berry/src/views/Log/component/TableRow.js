@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import { useTranslation } from 'react-i18next';
 import { TableRow, TableCell } from '@mui/material';
 
 import { timestamp2string, renderQuota } from 'utils/common';
@@ -19,13 +19,16 @@ function renderType(type) {
     return (
       <Label variant="filled" color="error">
         {' '}
-        未知{' '}
+        unknown {' '}
       </Label>
     );
   }
 }
 
 export default function LogTableRow({ item, userIsAdmin }) {
+
+  
+  const { t } = useTranslation();
   return (
     <>
       <TableRow tabIndex={item.id}>

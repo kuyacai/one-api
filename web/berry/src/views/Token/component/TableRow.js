@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import {
   Popover,
@@ -53,6 +54,7 @@ function createMenu(menuItems) {
 }
 
 export default function TokensTableRow({ item, manageToken, handleOpenModal, setModalTokenId }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(null);
   const [menuItems, setMenuItems] = useState(null);
   const [openDelete, setOpenDelete] = useState(false);
@@ -101,7 +103,7 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
 
   const actionItems = createMenu([
     {
-      text: '编辑',
+      text: t('edit'),
       icon: <IconEdit style={{ marginRight: '16px' }} />,
       onClick: () => {
         handleCloseMenu();
@@ -111,7 +113,7 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
       color: undefined
     },
     {
-      text: '删除',
+      text: t('delete'),
       icon: <IconTrash style={{ marginRight: '16px' }} />,
       onClick: handleDeleteOpen,
       color: 'error.main'
@@ -174,15 +176,15 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
             title={(() => {
               switch (statusSwitch) {
                 case 1:
-                  return '已启用';
+                  return t('enabled');
                 case 2:
-                  return '已禁用';
+                  return t('disabled');
                 case 3:
-                  return '已过期';
+                  return t('expired');
                 case 4:
-                  return '已耗尽';
+                  return t('exhausted');
                 default:
-                  return '未知';
+                  return t('unknown');
               }
             })()}
             placement="top"
@@ -198,11 +200,11 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
 
         <TableCell>{renderQuota(item.used_quota)}</TableCell>
 
-        <TableCell>{item.unlimited_quota ? '无限制' : renderQuota(item.remain_quota, 2)}</TableCell>
+        <TableCell>{item.unlimited_quota ? t('unlimited') : renderQuota(item.remain_quota, 2)}</TableCell>
 
         <TableCell>{timestamp2string(item.created_time)}</TableCell>
 
-        <TableCell>{item.expired_time === -1 ? '永不过期' : timestamp2string(item.expired_time)}</TableCell>
+        <TableCell>{item.expired_time === -1 ? t('neverExpires') : timestamp2string(item.expired_time)}</TableCell>
 
         <TableCell>
           <Stack direction="row" spacing={1}>
@@ -213,7 +215,7 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
                   copy(`sk-${item.key}`);
                 }}
               >
-                复制
+                {t('copy')}
               </Button>
               <Button size="small" onClick={(e) => handleOpenMenu(e, 'copy')}>
                 <IconCaretDownFilled size={'16px'} />
@@ -221,7 +223,7 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
             </ButtonGroup>
             <ButtonGroup size="small" aria-label="split button">
               <Button color="primary" onClick={(e) => handleCopy(COPY_OPTIONS[0], 'link')}>
-                聊天
+                {t('chat')}
               </Button>
               <Button size="small" onClick={(e) => handleOpenMenu(e, 'link')}>
                 <IconCaretDownFilled size={'16px'} />
@@ -247,14 +249,14 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
       </Popover>
 
       <Dialog open={openDelete} onClose={handleDeleteClose}>
-        <DialogTitle>删除Token</DialogTitle>
+        <DialogTitle>{t('deleteToken')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>是否删除Token {item.name}？</DialogContentText>
+          <DialogContentText>{t('confirmDeleteToken')} {item.name}？</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteClose}>关闭</Button>
+          <Button onClick={handleDeleteClose}>{t('close')}</Button>
           <Button onClick={handleDelete} sx={{ color: 'error.main' }} autoFocus>
-            删除
+            {t('delete')}
           </Button>
         </DialogActions>
       </Dialog>

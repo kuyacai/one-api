@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import SubCard from 'ui-component/cards/SubCard';
 import {
   Stack,
@@ -24,6 +25,7 @@ import { createFilterOptions } from '@mui/material/Autocomplete';
 
 const filter = createFilterOptions();
 const SystemSetting = () => {
+  const { t } = useTranslation();
   let [inputs, setInputs] = useState({
     PasswordLoginEnabled: '',
     PasswordRegisterEnabled: '',
@@ -112,7 +114,7 @@ const SystemSetting = () => {
         ...inputs,
         [key]: value
       }));
-      showSuccess('设置成功！');
+      showSuccess(t('settingsSuccess'));
     } else {
       showError(message);
     }
@@ -228,34 +230,34 @@ const SystemSetting = () => {
   return (
     <>
       <Stack spacing={2}>
-        <SubCard title="通用设置">
+        <SubCard title={t('generalSettings')}>
           <Grid container spacing={{ xs: 3, sm: 2, md: 4 }}>
             <Grid xs={12}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="ServerAddress">服务器地址</InputLabel>
+                <InputLabel htmlFor="ServerAddress">{t('serverAddress')}</InputLabel>
                 <OutlinedInput
                   id="ServerAddress"
                   name="ServerAddress"
                   value={inputs.ServerAddress || ''}
                   onChange={handleInputChange}
-                  label="服务器地址"
-                  placeholder="例如：https://yourdomain.com"
+                  label={t('serverAddress')}
+                  placeholder="e.g.：https://yourdomain.com"
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitServerAddress}>
-                更新服务器地址
+                {t('updateServerAddress')}
               </Button>
             </Grid>
           </Grid>
         </SubCard>
-        <SubCard title="配置登录注册">
+        <SubCard title={t('configureLoginRegistration')}>
           <Grid container spacing={{ xs: 3, sm: 2, md: 4 }}>
             <Grid xs={12} md={3}>
               <FormControlLabel
-                label="允许通过密码进行登录"
+                label={t('allowPasswordLogin')}
                 control={
                   <Checkbox checked={inputs.PasswordLoginEnabled === 'true'} onChange={handleInputChange} name="PasswordLoginEnabled" />
                 }
@@ -263,7 +265,7 @@ const SystemSetting = () => {
             </Grid>
             <Grid xs={12} md={3}>
               <FormControlLabel
-                label="允许通过密码进行注册"
+                label={t('allowPasswordRegistration')}
                 control={
                   <Checkbox
                     checked={inputs.PasswordRegisterEnabled === 'true'}
@@ -275,7 +277,7 @@ const SystemSetting = () => {
             </Grid>
             <Grid xs={12} md={3}>
               <FormControlLabel
-                label="通过密码注册时需要进行邮箱验证"
+                label={t('requireEmailVerificationForPasswordRegistration')}
                 control={
                   <Checkbox
                     checked={inputs.EmailVerificationEnabled === 'true'}
@@ -287,25 +289,25 @@ const SystemSetting = () => {
             </Grid>
             <Grid xs={12} md={3}>
               <FormControlLabel
-                label="允许通过 GitHub 账户登录 & 注册"
+                label={t('allowGitHubLoginRegistration')}
                 control={<Checkbox checked={inputs.GitHubOAuthEnabled === 'true'} onChange={handleInputChange} name="GitHubOAuthEnabled" />}
               />
             </Grid>
             <Grid xs={12} md={3}>
               <FormControlLabel
-                label="允许通过微信登录 & 注册"
+                label={t('allowWeChatLoginRegistration')}
                 control={<Checkbox checked={inputs.WeChatAuthEnabled === 'true'} onChange={handleInputChange} name="WeChatAuthEnabled" />}
               />
             </Grid>
             <Grid xs={12} md={3}>
               <FormControlLabel
-                label="允许新用户注册（此项为否时，新用户将无法以任何方式进行注册）"
+                label={t('allowNewUserRegistration')}
                 control={<Checkbox checked={inputs.RegisterEnabled === 'true'} onChange={handleInputChange} name="RegisterEnabled" />}
               />
             </Grid>
             <Grid xs={12} md={3}>
               <FormControlLabel
-                label="启用 Turnstile 用户校验"
+                label={t('enableTurnstileUserVerification')}
                 control={
                   <Checkbox checked={inputs.TurnstileCheckEnabled === 'true'} onChange={handleInputChange} name="TurnstileCheckEnabled" />
                 }
@@ -313,11 +315,11 @@ const SystemSetting = () => {
             </Grid>
           </Grid>
         </SubCard>
-        <SubCard title="配置邮箱域名白名单" subTitle="用以防止恶意用户利用临时邮箱批量注册">
+        <SubCard title={t('configureEmailDomainWhitelist')} subTitle={t('preventMaliciousUsersUsingTemporaryEmails')}>
           <Grid container spacing={{ xs: 3, sm: 2, md: 4 }}>
             <Grid xs={12}>
               <FormControlLabel
-                label="启用邮箱域名白名单"
+                label={t('enableEmailDomainWhitelist')}
                 control={
                   <Checkbox
                     checked={inputs.EmailDomainRestrictionEnabled === 'true'}
@@ -345,7 +347,7 @@ const SystemSetting = () => {
                     handleInputChange(event);
                   }}
                   filterSelectedOptions
-                  renderInput={(params) => <TextField {...params} name="EmailDomainWhitelist" label="允许的邮箱域名" />}
+                  renderInput={(params) => <TextField {...params} name="EmailDomainWhitelist" label={t('allowedEmailDomains')} />}
                   filterOptions={(options, params) => {
                     const filtered = filter(options, params);
                     const { inputValue } = params;
@@ -360,108 +362,108 @@ const SystemSetting = () => {
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitEmailDomainWhitelist}>
-                保存邮箱域名白名单设置
+                {t('saveEmailDomainWhitelistSettings')}
               </Button>
             </Grid>
           </Grid>
         </SubCard>
-        <SubCard title="配置 SMTP" subTitle="用以支持系统的邮件发送">
+        <SubCard title={t('configureSMTP')} subTitle={t('supportSystemEmailSending')}>
           <Grid container spacing={{ xs: 3, sm: 2, md: 4 }}>
             <Grid xs={12} md={4}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="SMTPServer">SMTP 服务器地址</InputLabel>
+                <InputLabel htmlFor="SMTPServer">{t('smtpServerAddress')}</InputLabel>
                 <OutlinedInput
                   id="SMTPServer"
                   name="SMTPServer"
                   value={inputs.SMTPServer || ''}
                   onChange={handleInputChange}
-                  label="SMTP 服务器地址"
-                  placeholder="例如：smtp.qq.com"
+                  label={t('smtpServerAddress')}
+                  placeholder="e.g.：smtp.qq.com"
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12} md={4}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="SMTPPort">SMTP 端口</InputLabel>
+                <InputLabel htmlFor="SMTPPort">{t('smtpPort')}</InputLabel>
                 <OutlinedInput
                   id="SMTPPort"
                   name="SMTPPort"
                   value={inputs.SMTPPort || ''}
                   onChange={handleInputChange}
-                  label="SMTP 端口"
-                  placeholder="默认: 587"
+                  label={t('smtpPort')}
+                  placeholder="default: 587"
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12} md={4}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="SMTPAccount">SMTP 账户</InputLabel>
+                <InputLabel htmlFor="SMTPAccount">{t('smtpAccount')}</InputLabel>
                 <OutlinedInput
                   id="SMTPAccount"
                   name="SMTPAccount"
                   value={inputs.SMTPAccount || ''}
                   onChange={handleInputChange}
-                  label="SMTP 账户"
-                  placeholder="通常是邮箱地址"
+                  label={t('smtpAccount')}
+                  placeholder={t('usuallyEmailAddress')}
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12} md={4}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="SMTPFrom">SMTP 发送者邮箱</InputLabel>
+                <InputLabel htmlFor="SMTPFrom">{t('smtpSenderEmail')}</InputLabel>
                 <OutlinedInput
                   id="SMTPFrom"
                   name="SMTPFrom"
                   value={inputs.SMTPFrom || ''}
                   onChange={handleInputChange}
-                  label="SMTP 发送者邮箱"
-                  placeholder="通常和邮箱地址保持一致"
+                  label={t('smtpSenderEmail')}
+                  placeholder={t('usuallySameAsEmailAddress')}
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12} md={4}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="SMTPToken">SMTP 访问凭证</InputLabel>
+                <InputLabel htmlFor="SMTPToken">{t('smtpAccessCredentials')}</InputLabel>
                 <OutlinedInput
                   id="SMTPToken"
                   name="SMTPToken"
                   value={inputs.SMTPToken || ''}
                   onChange={handleInputChange}
-                  label="SMTP 访问凭证"
-                  placeholder="敏感信息不会发送到前端显示"
+                  label={t('smtpAccessCredentials')}
+                  placeholder={t('sensitiveInfoNotSentToFrontend')}
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitSMTP}>
-                保存 SMTP 设置
+              {t('saveSMTPSettings')}
               </Button>
             </Grid>
           </Grid>
         </SubCard>
         <SubCard
-          title="配置 GitHub OAuth App"
+          title={t('configureGitHubOAuthApp')}
           subTitle={
             <span>
               {' '}
-              用以支持通过 GitHub 进行登录注册，
+              {t('supportGitHubLoginRegistration')}
               <a href="https://github.com/settings/developers" target="_blank" rel="noopener noreferrer">
-                点击此处
+                {t('clickHere')}
               </a>
-              管理你的 GitHub OAuth App
+              {t('manageYourGitHubOAuthApp')}
             </span>
           }
         >
           <Grid container spacing={{ xs: 3, sm: 2, md: 4 }}>
             <Grid xs={12}>
               <Alert severity="info" sx={{ wordWrap: 'break-word' }}>
-                Homepage URL 填 <b>{inputs.ServerAddress}</b>
-                ，Authorization callback URL 填 <b>{`${inputs.ServerAddress}/oauth/github`}</b>
+                {t('homepageURL')}  <b>{inputs.ServerAddress}</b>
+                ，Authorization callback URL  <b>{`${inputs.ServerAddress}/oauth/github`}</b>
               </Alert>
             </Grid>
             <Grid xs={12} md={6}>
@@ -473,7 +475,7 @@ const SystemSetting = () => {
                   value={inputs.GitHubClientId || ''}
                   onChange={handleInputChange}
                   label="GitHub Client ID"
-                  placeholder="输入你注册的 GitHub OAuth APP 的 ID"
+                  placeholder={t('enterYourGitHubOAuthAppID')}
                   disabled={loading}
                 />
               </FormControl>
@@ -487,36 +489,36 @@ const SystemSetting = () => {
                   value={inputs.GitHubClientSecret || ''}
                   onChange={handleInputChange}
                   label="GitHub Client Secret"
-                  placeholder="敏感信息不会发送到前端显示"
+                  placeholder={t('sensitiveInfoNotSentToFrontend')}
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitGitHubOAuth}>
-                保存 GitHub OAuth 设置
+                {t('saveGitHubOAuthSettings')}
               </Button>
             </Grid>
           </Grid>
         </SubCard>
         <SubCard
-          title="配置飞书授权登录"
+          title={t('configureFeishuOAuthLogin')}
           subTitle={
             <span>
               {' '}
-              用以支持通过飞书进行登录注册，
+              {t('supportFeishuLoginRegistration')}
               <a href="https://open.feishu.cn/app" target="_blank" rel="noreferrer">
-                点击此处
+                {t('clickHere')}
               </a>
-              管理你的飞书应用
+              {t('manageYourFeishuApp')}
             </span>
           }
         >
           <Grid container spacing={{ xs: 3, sm: 2, md: 4 }}>
             <Grid xs={12}>
               <Alert severity="info" sx={{ wordWrap: 'break-word' }}>
-                主页链接填 <code>{inputs.ServerAddress}</code>
-                ，重定向 URL 填 <code>{`${inputs.ServerAddress}/oauth/lark`}</code>
+              {t('homepageLink')} <code>{inputs.ServerAddress}</code>
+                ，{t('redirectURL')}<code>{`${inputs.ServerAddress}/oauth/lark`}</code>
               </Alert>
             </Grid>
             <Grid xs={12} md={6}>
@@ -528,7 +530,7 @@ const SystemSetting = () => {
                   value={inputs.LarkClientId || ''}
                   onChange={handleInputChange}
                   label="App ID"
-                  placeholder="输入 App ID"
+                  placeholder={t('enterAppID')}
                   disabled={loading}
                 />
               </FormControl>
@@ -542,138 +544,138 @@ const SystemSetting = () => {
                   value={inputs.LarkClientSecret || ''}
                   onChange={handleInputChange}
                   label="App Secret"
-                  placeholder="敏感信息不会发送到前端显示"
+                  placeholder={t('sensitiveInfoNotSentToFrontend')}
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitLarkOAuth}>
-                保存飞书 OAuth 设置
+                {t('saveFeishuOAuthSettings')}
               </Button>
             </Grid>
           </Grid>
         </SubCard>
         <SubCard
-          title="配置 WeChat Server"
+          title={t('configureWeChatServer')}
           subTitle={
             <span>
-              用以支持通过微信进行登录注册，
+              {t('supportWeChatLoginRegistration')}
               <a href="https://github.com/songquanpeng/wechat-server" target="_blank" rel="noopener noreferrer">
-                点击此处
+                {t('clickHere')}
               </a>
-              了解 WeChat Server
+              {t('learnAboutWeChatServer')}
             </span>
           }
         >
           <Grid container spacing={{ xs: 3, sm: 2, md: 4 }}>
             <Grid xs={12} md={4}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="WeChatServerAddress">WeChat Server 服务器地址</InputLabel>
+                <InputLabel htmlFor="WeChatServerAddress">{t('wechatServerAddress')}</InputLabel>
                 <OutlinedInput
                   id="WeChatServerAddress"
                   name="WeChatServerAddress"
                   value={inputs.WeChatServerAddress || ''}
                   onChange={handleInputChange}
-                  label="WeChat Server 服务器地址"
-                  placeholder="例如：https://yourdomain.com"
+                  label={t('wechatServerAddress')}
+                  placeholder="e.g.：https://yourdomain.com"
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12} md={4}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="WeChatServerToken">WeChat Server 访问凭证</InputLabel>
+                <InputLabel htmlFor="WeChatServerToken">{t('wechatServerAccessCredentials')}</InputLabel>
                 <OutlinedInput
                   id="WeChatServerToken"
                   name="WeChatServerToken"
                   value={inputs.WeChatServerToken || ''}
                   onChange={handleInputChange}
-                  label="WeChat Server 访问凭证"
-                  placeholder="敏感信息不会发送到前端显示"
+                  label={t('wechatServerAccessCredentials')}
+                  placeholder={t('sensitiveInfoNotSentToFrontend')}
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12} md={4}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="WeChatAccountQRCodeImageURL">微信公众号二维码图片链接</InputLabel>
+                <InputLabel htmlFor="WeChatAccountQRCodeImageURL">{t('wechatOfficialAccountQRCodeImageLink')}</InputLabel>
                 <OutlinedInput
                   id="WeChatAccountQRCodeImageURL"
                   name="WeChatAccountQRCodeImageURL"
                   value={inputs.WeChatAccountQRCodeImageURL || ''}
                   onChange={handleInputChange}
-                  label="微信公众号二维码图片链接"
-                  placeholder="输入一个图片链接"
+                  label={t('wechatOfficialAccountQRCodeImageLink')}
+                  placeholder={t('enterImageLink')}
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitWeChat}>
-                保存 WeChat Server 设置
+                {t('saveWeChatServerSettings')}
               </Button>
             </Grid>
           </Grid>
         </SubCard>
         <SubCard
-          title="配置 Message Pusher"
+          title={t('configureMessagePusher')}
           subTitle={
             <span>
-              用以推送报警信息，
+              {t('supportAlertPush')}
               <a href="https://github.com/songquanpeng/message-pusher" target="_blank" rel="noreferrer">
-                点击此处
+                {t('clickHere')}
               </a>
-              了解 Message Pusher
+              {t('learnAboutMessagePusher')}
             </span>
           }
         >
           <Grid container spacing={{ xs: 3, sm: 2, md: 4 }}>
             <Grid xs={12} md={6}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="MessagePusherAddress">Message Pusher 推送地址</InputLabel>
+                <InputLabel htmlFor="MessagePusherAddress">{t('messagePusherPushAddress')}</InputLabel>
                 <OutlinedInput
                   id="MessagePusherAddress"
                   name="MessagePusherAddress"
                   value={inputs.MessagePusherAddress || ''}
                   onChange={handleInputChange}
-                  label="Message Pusher 推送地址"
-                  placeholder="例如：https://msgpusher.com/push/your_username"
+                  label={t('messagePusherPushAddress')}
+                  placeholder="e.g.：https://msgpusher.com/push/your_username"
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12} md={6}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="MessagePusherToken">Message Pusher 访问凭证</InputLabel>
+                <InputLabel htmlFor="MessagePusherToken">{t('messagePusherAccessCredentials')}</InputLabel>
                 <OutlinedInput
                   id="MessagePusherToken"
                   name="MessagePusherToken"
                   type="password"
                   value={inputs.MessagePusherToken || ''}
                   onChange={handleInputChange}
-                  label="Message Pusher 访问凭证"
-                  placeholder="敏感信息不会发送到前端显示"
+                  label={t('messagePusherAccessCredentials')}
+                  placeholder={t('sensitiveInfoNotSentToFrontend')}
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitMessagePusher}>
-                保存 Message Pusher 设置
+                {t('saveMessagePusherSettings')}
               </Button>
             </Grid>
           </Grid>
         </SubCard>
         <SubCard
-          title="配置 Turnstile"
+          title={t('configureTurnstile')}
           subTitle={
             <span>
-              用以支持用户校验，
+              {t('supportUserVerification')}
               <a href="https://dash.cloudflare.com/" target="_blank" rel="noopener noreferrer">
-                点击此处
+                {t('clickHere')}
               </a>
-              管理你的 Turnstile Sites，推荐选择 Invisible Widget Type
+              {t('manageYourTurnstileSites')}
             </span>
           }
         >
@@ -687,7 +689,7 @@ const SystemSetting = () => {
                   value={inputs.TurnstileSiteKey || ''}
                   onChange={handleInputChange}
                   label="Turnstile Site Key"
-                  placeholder="输入你注册的 Turnstile Site Key"
+                  placeholder={t('enterTurnstileSiteKey')}
                   disabled={loading}
                 />
               </FormControl>
@@ -702,14 +704,14 @@ const SystemSetting = () => {
                   value={inputs.TurnstileSecretKey || ''}
                   onChange={handleInputChange}
                   label="Turnstile Secret Key"
-                  placeholder="敏感信息不会发送到前端显示"
+                  placeholder={t('sensitiveInfoNotSentToFrontend')}
                   disabled={loading}
                 />
               </FormControl>
             </Grid>
             <Grid xs={12}>
               <Button variant="contained" onClick={submitTurnstile}>
-                保存 Turnstile 设置
+                {t('saveTurnstileSettings')}
               </Button>
             </Grid>
           </Grid>
@@ -717,12 +719,12 @@ const SystemSetting = () => {
       </Stack>
       <Dialog open={showPasswordWarningModal} onClose={() => setShowPasswordWarningModal(false)} maxWidth={'md'}>
         <DialogTitle sx={{ margin: '0px', fontWeight: 700, lineHeight: '1.55556', padding: '24px', fontSize: '1.125rem' }}>
-          警告
+          {t('warning')}
         </DialogTitle>
         <Divider />
-        <DialogContent>取消密码登录将导致所有未绑定其他登录方式的用户（包括管理员）无法通过密码登录，确认取消？</DialogContent>
+        <DialogContent>{t('cancelPasswordLoginWarning')}</DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowPasswordWarningModal(false)}>取消</Button>
+          <Button onClick={() => setShowPasswordWarningModal(false)}>{t('cancel')}</Button>
           <Button
             sx={{ color: 'error.main' }}
             onClick={async () => {
@@ -730,7 +732,7 @@ const SystemSetting = () => {
               await updateOption('PasswordLoginEnabled', 'false');
             }}
           >
-            确定
+            {t('confirm')}
           </Button>
         </DialogActions>
       </Dialog>

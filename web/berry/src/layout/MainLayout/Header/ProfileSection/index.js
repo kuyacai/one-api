@@ -22,7 +22,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import User1 from 'assets/images/users/user-round.svg';
 import useLogin from 'hooks/useLogin';
-
+import { useTranslation } from 'react-i18next';
 // assets
 import { IconLogout, IconSettings, IconUserScan } from '@tabler/icons-react';
 
@@ -63,6 +63,7 @@ const ProfileSection = () => {
     prevOpen.current = open;
   }, [open]);
 
+  const { t } = useTranslation();
   return (
     <>
       <Chip
@@ -150,14 +151,14 @@ const ProfileSection = () => {
                       <ListItemIcon>
                         <IconUserScan stroke={1.5} size="1.3rem" />
                       </ListItemIcon>
-                      <ListItemText primary={<Typography variant="body2">设置</Typography>} />
+                      <ListItemText primary={<Typography variant="body2">{t('setting')}</Typography>} />
                     </ListItemButton>
 
                     <ListItemButton sx={{ borderRadius: `${customization.borderRadius}px` }} onClick={handleLogout}>
                       <ListItemIcon>
                         <IconLogout stroke={1.5} size="1.3rem" />
                       </ListItemIcon>
-                      <ListItemText primary={<Typography variant="body2">登出</Typography>} />
+                      <ListItemText primary={<Typography variant="body2">{t('logout')}</Typography>} />
                     </ListItemButton>
                   </List>
                 </MainCard>

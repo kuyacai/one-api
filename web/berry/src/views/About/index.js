@@ -4,11 +4,12 @@ import { showError } from 'utils/common';
 import { marked } from 'marked';
 import { Box, Container, Typography } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
+import { useTranslation } from 'react-i18next';
 
 const About = () => {
   const [about, setAbout] = useState('');
   const [aboutLoaded, setAboutLoaded] = useState(false);
-
+  const { t } = useTranslation();
   const displayAbout = async () => {
     setAbout(localStorage.getItem('about') || '');
     const res = await API.get('/api/about');
@@ -22,7 +23,7 @@ const About = () => {
       localStorage.setItem('about', aboutContent);
     } else {
       showError(message);
-      setAbout('加载关于内容失败...');
+      setAbout(t('loadingError'));
     }
     setAboutLoaded(true);
   };
@@ -30,17 +31,19 @@ const About = () => {
   useEffect(() => {
     displayAbout().then();
   }, []);
-
+  
   return (
     <>
       {aboutLoaded && about === '' ? (
         <>
           <Box>
             <Container sx={{ paddingTop: '40px' }}>
-              <MainCard title="关于">
+              <MainCard title="{t('about')}">
                 <Typography variant="body2">
-                  可在设置页面设置关于内容，支持 HTML & Markdown <br />
-                  项目仓库地址：
+                {t('aboutContent')} <br />
+                  <br />
+                  {t('repoAddress')}
+                  
                   <a href="https://github.com/songquanpeng/one-api">https://github.com/songquanpeng/one-api</a>
                 </Typography>
               </MainCard>

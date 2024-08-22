@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { CHANNEL_OPTIONS } from 'constants/ChannelConstants';
 import { useTheme } from '@mui/material/styles';
 import { API } from 'utils/api';
+import { useTranslation } from 'react-i18next';
 import { showError, showSuccess, getChannelModels } from 'utils/common';
 import {
   Dialog,
@@ -69,6 +70,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const EditModal = ({ open, channelId, onCancel, onOk }) => {
+
+  const { t } = useTranslation();
   const theme = useTheme();
   // const [loading, setLoading] = useState(false);
   const [initialInput, setInitialInput] = useState(defaultConfig.input);
@@ -126,7 +129,7 @@ const EditModal = ({ open, channelId, onCancel, onOk }) => {
       const { data } = res.data;
       data.forEach((item) => {
         if (!item.owned_by) {
-          item.owned_by = '未知';
+          item.owned_by = t('unknown');
         }
       });
       // 先对data排序
@@ -187,9 +190,9 @@ const EditModal = ({ open, channelId, onCancel, onOk }) => {
     const { success, message } = res.data;
     if (success) {
       if (channelId) {
-        showSuccess('渠道更新成功！');
+        showSuccess(t('channelUpdateSuccess'));
       } else {
-        showSuccess('渠道创建成功！');
+        showSuccess(t('channelCreateSuccess'));
       }
       setSubmitting(false);
       setStatus({ success: true });
@@ -215,7 +218,7 @@ const EditModal = ({ open, channelId, onCancel, onOk }) => {
       if (modelOption) {
         return modelOption;
       }
-      return { id: model, group: '自定义：点击或回车输入' };
+      return { id: model, group: t('customInputPrompt') };
     });
     return modelList;
   }
@@ -277,7 +280,7 @@ const EditModal = ({ open, channelId, onCancel, onOk }) => {
           fontSize: '1.125rem'
         }}
       >
-        {channelId ? '编辑渠道' : '新建渠道'}
+        {channelId ? t('editChannel') : t('createChannel')}
       </DialogTitle>
       <Divider />
       <DialogContent>
@@ -433,7 +436,7 @@ const EditModal = ({ open, channelId, onCancel, onOk }) => {
                     const event = {
                       target: {
                         name: 'models',
-                        value: value.map((item) => (typeof item === 'string' ? { id: item, group: '自定义：点击或回车输入' } : item))
+                        value: value.map((item) => (typeof item === 'string' ? { id: item, group: t('customInputPrompt') } : item))
                       }
                     };
                     handleChange(event);
@@ -459,7 +462,7 @@ const EditModal = ({ open, channelId, onCancel, onOk }) => {
                     if (inputValue !== '' && !isExisting) {
                       filtered.push({
                         id: inputValue,
-                        group: '自定义：点击或回车输入'
+                        group: t('customInputPrompt')
                       });
                     }
                     return filtered;
@@ -490,14 +493,14 @@ const EditModal = ({ open, channelId, onCancel, onOk }) => {
                       setFieldValue('models', initialModel(basicModels));
                     }}
                   >
-                    填入相关模型
+                    {t('fillInRelevantModel')}
                   </Button>
                   <Button
                     onClick={() => {
                       setFieldValue('models', modelOptions);
                     }}
                   >
-                    填入所有模型
+                    {t('fillInAllModels')}
                   </Button>
                 </ButtonGroup>
               </Container>
@@ -530,7 +533,7 @@ const EditModal = ({ open, channelId, onCancel, onOk }) => {
                         onChange={handleChange}
                         aria-describedby="helper-text-channel-key-label"
                         minRows={5}
-                        placeholder={inputPrompt.key + '，一行一个密钥'}
+                        placeholder={inputPrompt.key + t('oneKeyPerLine')}
                       />
                     )}
 
@@ -549,7 +552,7 @@ const EditModal = ({ open, channelId, onCancel, onOk }) => {
                       }}
                     >
                       <Switch checked={batchAdd} onChange={(e) => setBatchAdd(e.target.checked)} />
-                      批量添加
+                      {t('batchAdd')}
                     </Container>
                   )}
                 </>
@@ -596,9 +599,9 @@ const EditModal = ({ open, channelId, onCancel, onOk }) => {
                 )}
               </FormControl>
               <DialogActions>
-                <Button onClick={onCancel}>取消</Button>
+                <Button onClick={onCancel}>{t('cancel')}</Button>
                 <Button disableElevation disabled={isSubmitting} type="submit" variant="contained" color="primary">
-                  提交
+                  {t('submit')}
                 </Button>
               </DialogActions>
             </form>
