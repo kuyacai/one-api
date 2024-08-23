@@ -43,7 +43,11 @@ const Header = () => {
   const handleCloseMenu = () => {
     setOpen(null);
   };
-  const { t } = useTranslation();
+  const { i18n,t } = useTranslation();
+
+  const changeLanguage = (language) => {
+    i18n.changeLanguage(language);
+  };
 
   return (
     <>
@@ -79,7 +83,7 @@ const Header = () => {
             <Button component={Link} variant="text" to="/about" color={pathname === '/about' ? 'primary' : 'inherit'}>  
             {t('about')}
             </Button>
-            <LanguageSwitcher />
+            <LanguageSwitcher changeLanguage={changeLanguage} />
             <ThemeButton />
             {account.user ? (
               <>

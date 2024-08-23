@@ -1,20 +1,29 @@
-// src/components/LanguageSwitcher.js
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button, ButtonGroup } from '@mui/material';
+import React, { useState } from 'react';
+import { MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 
-const LanguageSwitcher = () => {
-  const { i18n } = useTranslation();
+const LanguageSwitcher = ({ changeLanguage }) => {
+  const [language, setLanguage] = useState('en');
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
+  const handleChange = (event) => {
+    const selectedLanguage = event.target.value;
+    setLanguage(selectedLanguage);
+    changeLanguage(selectedLanguage);
   };
 
   return (
-    <ButtonGroup variant="contained" aria-label="outlined primary button group">
-      <Button onClick={() => changeLanguage('en')}>English</Button>
-      <Button onClick={() => changeLanguage('zh')}>中文</Button>
-    </ButtonGroup>
+    <FormControl variant="outlined" fullWidth>
+      <InputLabel id="language-select-label">Language</InputLabel>
+      <Select
+        labelId="language-select-label"
+        id="language-select"
+        value={language}
+        onChange={handleChange}
+        label="Language"
+      >
+        <MenuItem value="en">English</MenuItem>
+        <MenuItem value="zh">中文</MenuItem>
+      </Select>
+    </FormControl>
   );
 };
 
