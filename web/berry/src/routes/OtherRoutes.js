@@ -1,5 +1,7 @@
 import { lazy } from 'react';
 
+import { Navigate } from 'react-router-dom';
+
 // project imports
 import Loadable from 'ui-component/Loadable';
 import MinimalLayout from 'layout/MinimalLayout';
@@ -23,7 +25,7 @@ const OtherRoutes = {
   children: [
     {
       path: '',
-      element: <Home />
+      element: <Navigate to="/panel" />
     },
     {
       path: '/about',
