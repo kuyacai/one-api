@@ -25,7 +25,7 @@ import {
   Switch,
   Checkbox
 } from '@mui/material';
-
+import i18n from 'i18next';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { defaultConfig, typeConfig } from '../type/Config'; //typeConfig
@@ -39,21 +39,21 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const filter = createFilterOptions();
 const validationSchema = Yup.object().shape({
   is_edit: Yup.boolean(),
-  name: Yup.string().required('名称 不能为空'),
-  type: Yup.number().required('渠道 不能为空'),
+  name: Yup.string().required(i18n.t('validation.nameRequired')),
+  type: Yup.number().required(i18n.t('validation.typeRequired')),
   key: Yup.string().when(['is_edit', 'type'], {
     is: (is_edit, type) => !is_edit && type !== 33,
-    then: Yup.string().required('密钥 不能为空')
+    then: Yup.string().required(i18n.t('validation.keyRequired'))
   }),
   other: Yup.string(),
-  models: Yup.array().min(1, '模型 不能为空'),
-  groups: Yup.array().min(1, '用户组 不能为空'),
+  models: Yup.array().min(1, i18n.t('validation.modelsRequired')),
+  groups: Yup.array().min(1, i18n.t('validation.groupsRequired')),
   base_url: Yup.string().when('type', {
     is: (value) => [3, 8].includes(value),
-    then: Yup.string().required('渠道API地址 不能为空'), // base_url 是必需的
+    then: Yup.string().required(i18n.t('validation.baseUrlRequired')), // base_url 是必需的
     otherwise: Yup.string() // 在其他情况下，base_url 可以是任意字符串
   }),
-  model_mapping: Yup.string().test('is-json', '必须是有效的JSON字符串', function (value) {
+  model_mapping: Yup.string().test('is-json', i18n.t('validation.validJsonRequired'), function (value) {
     try {
       if (value === '' || value === null || value === undefined) {
         return true;

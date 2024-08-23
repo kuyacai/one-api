@@ -6,9 +6,10 @@ import { Formik, Form, Field } from 'formik';
 import { showError } from 'utils/common';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 const validationSchema = Yup.object().shape({
-  code: Yup.string().required('验证码不能为空')
+  code: Yup.string().required(i18n.t('validation.codeRequired'))
 });
 
 const WechatModal = ({ open, handleClose, wechatLogin, qrCode }) => {
@@ -27,7 +28,7 @@ const WechatModal = ({ open, handleClose, wechatLogin, qrCode }) => {
       <DialogTitle>{t('wechatVerificationCodeLogin')}</DialogTitle>
       <DialogContent>
         <Grid container direction="column" alignItems="center">
-          <img src={qrCode} alt="二维码" style={{ maxWidth: '300px', maxHeight: '300px', width: 'auto', height: 'auto' }} />
+          <img src={qrCode} alt={t('qrCode')} style={{ maxWidth: '300px', maxHeight: '300px', width: 'auto', height: 'auto' }} />
           <Typography
             variant="body2"
             color="text.secondary"
@@ -43,7 +44,7 @@ const WechatModal = ({ open, handleClose, wechatLogin, qrCode }) => {
                   <Field
                     as={TextField}
                     name="code"
-                    label="验证码"
+                    label={t('verificationCode')}
                     error={touched.code && Boolean(errors.code)}
                     helperText={touched.code && errors.code}
                     fullWidth

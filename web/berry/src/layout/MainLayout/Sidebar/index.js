@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import { useTranslation } from 'react-i18next';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box, Chip, Drawer, Stack, useMediaQuery } from '@mui/material';
@@ -17,6 +17,7 @@ import { drawerWidth } from 'store/constant';
 // ==============================|| SIDEBAR DRAWER ||============================== //
 
 const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -40,7 +41,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
           <MenuCard />
           <Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
             <Chip
-              label={process.env.REACT_APP_VERSION || '未知版本号'}
+              label={process.env.REACT_APP_VERSION || t('unknownVersion')}
               disabled
               chipcolor="secondary"
               size="small"
@@ -55,7 +56,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
           <MenuCard />
           <Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
             <Chip
-              label={process.env.REACT_APP_VERSION || '未知版本号'}
+              label={process.env.REACT_APP_VERSION || t('unknownVersion')}
               disabled
               chipcolor="secondary"
               size="small"

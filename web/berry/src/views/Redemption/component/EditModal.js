@@ -20,14 +20,15 @@ import {
 
 import { renderQuotaWithPrompt, showSuccess, showError, downloadTextAsFile } from 'utils/common';
 import { API } from 'utils/api';
+import i18n from 'i18next';
 
 const validationSchema = Yup.object().shape({
   is_edit: Yup.boolean(),
-  name: Yup.string().required('名称 不能为空'),
-  quota: Yup.number().min(0, '必须大于等于0'),
+  name: Yup.string().required(i18n.t('validation.nameRequired')),
+  quota: Yup.number().min(0, i18n.t('validation.quotaMin')),
   count: Yup.number().when('is_edit', {
     is: false,
-    then: Yup.number().min(1, '必须大于等于1'),
+    then: Yup.number().min(1, i18n.t('validation.countMin')),
     otherwise: Yup.number()
   })
 });

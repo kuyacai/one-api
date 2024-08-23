@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -29,21 +30,21 @@ import { API } from 'utils/api';
 
 const validationSchema = Yup.object().shape({
   is_edit: Yup.boolean(),
-  username: Yup.string().required('用户名 不能为空'),
+  username: Yup.string().required(i18n.t('validation.usernameRequired')),
   display_name: Yup.string(),
   password: Yup.string().when('is_edit', {
     is: false,
-    then: Yup.string().required('密码 不能为空'),
+    then: Yup.string().required(i18n.t('validation.passwordRequired')),
     otherwise: Yup.string()
   }),
   group: Yup.string().when('is_edit', {
     is: false,
-    then: Yup.string().required('用户组 不能为空'),
+    then: Yup.string().required(i18n.t('validation.groupRequired')),
     otherwise: Yup.string()
   }),
   quota: Yup.number().when('is_edit', {
     is: false,
-    then: Yup.number().min(0, '额度 不能小于 0'),
+    then: Yup.number().min(0, i18n.t('validation.quotaMin')),
     otherwise: Yup.number()
   })
 });

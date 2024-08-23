@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useTheme } from '@mui/material/styles';
@@ -39,8 +40,8 @@ const filter = createFilterOptions();
 
 const validationSchema = Yup.object().shape({
   is_edit: Yup.boolean(),
-  name: Yup.string().required('名称 不能为空'),
-  remain_quota: Yup.number().min(0, '必须大于等于0'),
+  name: Yup.string().required(i18n.t('validation.nameRequired')),
+  remain_quota: Yup.number().min(0, i18n.t('validation.quotaMin')),
   expired_time: Yup.number(),
   unlimited_quota: Yup.boolean()
 });

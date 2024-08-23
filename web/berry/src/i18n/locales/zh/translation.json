@@ -402,7 +402,33 @@
   "overview": "总览",
   "redemption": "兑换",
   "topup": "充值",
-  "profile": "我的"
+  "profile": "我的",
+  "qrCode": "二维码",
+  "unknownVersion": "未知版本号",
+  "validation": {
+    "codeRequired": "验证码不能为空",
+    "nameRequired": "名称不能为空",
+    "typeRequired": "渠道不能为空",
+    "keyRequired": "密钥不能为空",
+    "modelsRequired": "模型不能为空",
+    "groupsRequired": "用户组不能为空",
+    "baseUrlRequired": "渠道API地址不能为空",
+    "validJsonRequired": "必须是有效的JSON字符串",
+    "emailInvalid": "请输入正确的邮箱地址",
+    "emailRequired": "邮箱不能为空",
+    "verificationCodeRequired": "验证码不能为空",
+    "quotaMin": "必须大于等于0",
+    "countMin": "必须大于等于1",
+    "usernameRequired": "用户名不能为空",
+    "passwordRequired": "密码不能为空",
+    "groupRequired": "用户组不能为空"
+  },
+  "role": {
+    "user": "普通用户",
+    "admin": "管理员",
+    "superAdmin": "超级管理员",
+    "unknown": "未知身份"
+  }
     
   
 

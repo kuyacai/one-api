@@ -402,7 +402,33 @@
   "overview": "Overview",
   "redemption": "Redemption",
   "topup": "Top-up",
-  "profile": "Profile"
+  "profile": "Profile",
+  "qrCode": "QR Code",
+  "unknownVersion": "Unknown version",
+  "validation": {
+    "codeRequired": "Code is required",
+    "nameRequired": "Name is required",
+    "typeRequired": "Type is required",
+    "keyRequired": "Key is required",
+    "modelsRequired": "Models are required",
+    "groupsRequired": "Groups are required",
+    "baseUrlRequired": "Base URL is required",
+    "validJsonRequired": "Must be a valid JSON string",
+    "emailInvalid": "Please enter a valid email address",
+    "emailRequired": "Email is required",
+    "verificationCodeRequired": "Verification code is required",
+    "quotaMin": "Must be greater than or equal to 0",
+    "countMin": "Must be greater than or equal to 1",
+    "usernameRequired": "Username is required",
+    "passwordRequired": "Password is required",
+    "groupRequired": "Group is required"
+  },
+  "role": {
+    "user": "User",
+    "admin": "Admin",
+    "superAdmin": "Super Admin",
+    "unknown": "Unknown"
+  }
    
   
   

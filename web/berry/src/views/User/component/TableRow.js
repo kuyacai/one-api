@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
@@ -27,13 +28,13 @@ import { useTheme } from '@mui/material/styles';
 function renderRole(role) {
   switch (role) {
     case 1:
-      return <Label color="default">普通用户</Label>;
+      return <Label color="default">{i18n.t('role.user')}</Label>;
     case 10:
-      return <Label color="orange">管理员</Label>;
+      return <Label color="orange">{i18n.t('role.admin')}</Label>;
     case 100:
-      return <Label color="success">超级管理员</Label>;
+      return <Label color="success">{i18n.t('role.superAdmin')}</Label>;
     default:
-      return <Label color="error">未知身份</Label>;
+      return <Label color="error">{i18n.t('role.unknown')}</Label>;
   }
 }
 

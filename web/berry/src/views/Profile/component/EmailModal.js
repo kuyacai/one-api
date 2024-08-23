@@ -21,10 +21,11 @@ import { useTheme } from "@mui/material/styles";
 import * as Yup from "yup";
 import useRegister from "hooks/useRegister";
 import { API } from "utils/api";
+import i18n from 'i18next';
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email("请输入正确的邮箱地址").required("邮箱不能为空"),
-  email_verification_code: Yup.string().required("验证码不能为空"),
+  email: Yup.string().email(i18n.t('validation.emailInvalid')).required(i18n.t('validation.emailRequired')),
+  email_verification_code: Yup.string().required(i18n.t('validation.verificationCodeRequired')),
 });
 
 const EmailModal = ({ open, handleClose, turnstileToken }) => {
