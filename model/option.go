@@ -28,6 +28,8 @@ func InitOptionMap() {
 	config.OptionMap["PasswordRegisterEnabled"] = strconv.FormatBool(config.PasswordRegisterEnabled)
 	config.OptionMap["EmailVerificationEnabled"] = strconv.FormatBool(config.EmailVerificationEnabled)
 	config.OptionMap["GitHubOAuthEnabled"] = strconv.FormatBool(config.GitHubOAuthEnabled)
+	config.OptionMap["GoogleOAuthEnabled"] = strconv.FormatBool(config.GoogleOAuthEnabled)
+	config.OptionMap["AppleOAuthEnabled"] = strconv.FormatBool(config.AppleOAuthEnabled)
 	config.OptionMap["WeChatAuthEnabled"] = strconv.FormatBool(config.WeChatAuthEnabled)
 	config.OptionMap["TurnstileCheckEnabled"] = strconv.FormatBool(config.TurnstileCheckEnabled)
 	config.OptionMap["RegisterEnabled"] = strconv.FormatBool(config.RegisterEnabled)
@@ -54,6 +56,13 @@ func InitOptionMap() {
 	config.OptionMap["ServerAddress"] = ""
 	config.OptionMap["GitHubClientId"] = ""
 	config.OptionMap["GitHubClientSecret"] = ""
+	config.OptionMap["GoogleClientId"] = ""
+	config.OptionMap["GoogleRedirectUri"] = ""
+	config.OptionMap["GoogleClientSecret"] = ""
+	config.OptionMap["AppleClientId"] = ""
+	config.OptionMap["AppleRedirectUri"] = ""
+	config.OptionMap["AppleTeamId"] = ""
+	config.OptionMap["AppleClientSecret"] = ""
 	config.OptionMap["WeChatServerAddress"] = ""
 	config.OptionMap["WeChatServerToken"] = ""
 	config.OptionMap["WeChatAccountQRCodeImageURL"] = ""
@@ -79,16 +88,18 @@ func InitOptionMap() {
 }
 
 func loadOptionsFromDatabase() {
-	options, _ := AllOption()
-	for _, option := range options {
-		if option.Key == "ModelRatio" {
-			option.Value = billingratio.AddNewMissingRatio(option.Value)
-		}
-		err := updateOptionMap(option.Key, option.Value)
-		if err != nil {
-			logger.SysError("failed to update option map: " + err.Error())
-		}
-	}
+    options, _ := AllOption()
+    for _, option := range options {
+        if option.Key == "ModelRatio" {
+            option.Value = billingratio.AddNewMissingRatio(option.Value)
+        }
+        err := updateOptionMap(option.Key, option.Value)
+        if err != nil {
+            logger.SysError("failed to update option map: " + err.Error())
+        }
+        // 添加调试信息
+        //logger.SysLog(fmt.Sprintf("Loaded option: %s = %s", option.Key, option.Value))
+    }
 }
 
 func SyncOptions(frequency int) {
@@ -130,6 +141,10 @@ func updateOptionMap(key string, value string) (err error) {
 			config.EmailVerificationEnabled = boolValue
 		case "GitHubOAuthEnabled":
 			config.GitHubOAuthEnabled = boolValue
+		case "GoogleOAuthEnabled":
+			config.GoogleOAuthEnabled = boolValue
+		case "AppleOAuthEnabled":
+			config.AppleOAuthEnabled = boolValue
 		case "WeChatAuthEnabled":
 			config.WeChatAuthEnabled = boolValue
 		case "TurnstileCheckEnabled":
@@ -172,6 +187,20 @@ func updateOptionMap(key string, value string) (err error) {
 		config.GitHubClientId = value
 	case "GitHubClientSecret":
 		config.GitHubClientSecret = value
+	case "GoogleClientId":
+		config.GoogleClientId = value
+	case "GoogleRedirectUri":
+		config.GoogleRedirectUri = value
+	case "GoogleClientSecret":
+		config.GoogleClientSecret = value
+	case "AppleClientId":
+		config.AppleClientId = value
+	case "AppleRedirectUri":
+		config.AppleRedirectUri = value
+	case "AppleTeamId":
+		config.AppleTeamId = value
+	case "AppleClientSecret":
+		config.AppleClientSecret = value
 	case "LarkClientId":
 		config.LarkClientId = value
 	case "LarkClientSecret":
@@ -225,5 +254,12 @@ func updateOptionMap(key string, value string) (err error) {
 	case "Theme":
 		config.Theme = value
 	}
+
+	// 添加调试信息
+    //logger.SysLog(fmt.Sprintf("Updated config: %s = %s", key, value))
+	//logger.SysLog(fmt.Sprintf("Current config: %+v", config.GoogleClientId))
+	//logger.SysLog(fmt.Sprintf("Current config: %+v", config.GoogleClientSecret))
+	//logger.SysLog(fmt.Sprintf("Current config: %+v", config.GoogleRedirectUri))
+
 	return err
 }

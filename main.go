@@ -106,6 +106,7 @@ func main() {
 	server.Use(middleware.CORS())
 
 	router.SetRouter(server, buildFS)
+	//router.SetRouter(server)
 	var port = os.Getenv("PORT")
 	if port == "" {
 		port = strconv.Itoa(*common.Port)

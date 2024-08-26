@@ -22,7 +22,13 @@ const config = {
     turnstile_site_key: '',
     version: '',
     wechat_login: false,
-    wechat_qrcode: ''
+    wechat_qrcode: '',
+    // supported google and apple oauth
+    google_client_id: '',
+    google_oauth: false,
+    apple_client_id: '',
+    apple_team_id: '',
+    apple_oauth: false
   }
 };
 

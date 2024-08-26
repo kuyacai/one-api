@@ -10,6 +10,8 @@ import MinimalLayout from 'layout/MinimalLayout';
 const AuthLogin = Loadable(lazy(() => import('views/Authentication/Auth/Login')));
 const AuthRegister = Loadable(lazy(() => import('views/Authentication/Auth/Register')));
 const GitHubOAuth = Loadable(lazy(() => import('views/Authentication/Auth/GitHubOAuth')));
+const GoogleOAuth = Loadable(lazy(() => import('views/Authentication/Auth/GoogleOAuth')));
+const AppleOAuth = Loadable(lazy(() => import('views/Authentication/Auth/AppleOAuth')));
 const LarkOAuth = Loadable(lazy(() => import('views/Authentication/Auth/LarkOAuth')));
 const ForgetPassword = Loadable(lazy(() => import('views/Authentication/Auth/ForgetPassword')));
 const ResetPassword = Loadable(lazy(() => import('views/Authentication/Auth/ResetPassword')));
@@ -50,6 +52,14 @@ const OtherRoutes = {
     {
       path: '/oauth/github',
       element: <GitHubOAuth />
+    },
+    {
+      path: '/oauth/google',
+      element: <GoogleOAuth />
+    },
+    {
+      path: '/oauth/apple',
+      element: <AppleOAuth />
     },
     {
       path: '/oauth/lark',

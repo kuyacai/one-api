@@ -35,6 +35,8 @@ var PasswordLoginEnabled = true
 var PasswordRegisterEnabled = true
 var EmailVerificationEnabled = false
 var GitHubOAuthEnabled = false
+var GoogleOAuthEnabled = false
+var AppleOAuthEnabled = false
 var WeChatAuthEnabled = false
 var TurnstileCheckEnabled = false
 var RegisterEnabled = true
@@ -66,6 +68,17 @@ var SMTPToken = ""
 
 var GitHubClientId = ""
 var GitHubClientSecret = ""
+
+// Support Google OAuth2
+var GoogleClientId = ""
+var GoogleClientSecret = ""
+var GoogleRedirectUri = ""
+
+// Support Apple OAuth2
+var AppleClientId = ""
+var AppleTeamId = ""
+var AppleClientSecret = ""
+var AppleRedirectUri = ""
 
 var LarkClientId = ""
 var LarkClientSecret = ""

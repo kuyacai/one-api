@@ -80,6 +80,28 @@ export async function getOAuthState() {
   }
 }
 
+export async function onGoogleOAuthClicked(google_client_id, openInNewTab = false) {
+  const state = await getOAuthState();
+  if (!state) return;
+  let url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${google_client_id}&redirect_uri=${encodeURIComponent(window.location.origin + '/oauth/google')}&response_type=code&scope=openid%20email%20profile&state=${state}`;
+  if (openInNewTab) {
+    window.open(url);
+  } else {
+    window.location.href = url;
+  }
+}
+
+export async function onAppleOAuthClicked(apple_client_id, openInNewTab = false) {
+  const state = await getOAuthState();
+  if (!state) return;
+  let url = `https://appleid.apple.com/auth/authorize?client_id=${apple_client_id}&redirect_uri=${encodeURIComponent(window.location.origin + '/oauth/apple')}&response_type=code&scope=name%20email&state=${state}`;
+  if (openInNewTab) {
+    window.open(url);
+  } else {
+    window.location.href = url;
+  }
+}
+
 export async function onGitHubOAuthClicked(github_client_id, openInNewTab = false) {
   const state = await getOAuthState();
   if (!state) return;

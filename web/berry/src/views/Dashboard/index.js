@@ -195,9 +195,11 @@ function getLineCardOption(lineDataGroup, field) {
       case 'PromptTokens':
         tmp.value += item.CompletionTokens;
         break;
+      default:
+        break;
     }
 
-    if (index == lastItem) {
+    if (index === lastItem) {
       todayValue = tmp.value;
     }
     return tmp;
@@ -215,6 +217,8 @@ function getLineCardOption(lineDataGroup, field) {
     case 'PromptTokens':
       chartData = generateChartOptions(lineData, '');
       todayValue = renderNumber(todayValue);
+      break;
+    default:
       break;
   }
 

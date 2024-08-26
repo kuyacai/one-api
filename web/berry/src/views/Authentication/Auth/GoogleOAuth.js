@@ -1,5 +1,5 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { showError } from 'utils/common';
 import useLogin from 'hooks/useLogin';
 
@@ -14,23 +14,19 @@ import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
 import Logo from 'ui-component/Logo';
 
-// assets
-
-// ================================|| AUTH3 - LOGIN ||================================ //
-
-const GitHubOAuth = () => {
+const GoogleOAuth = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const { t } = useTranslation();
 
   const [searchParams] = useSearchParams();
   const [prompt, setPrompt] = useState(t('handling'));
-  const { githubLogin } = useLogin();
+  const { googleLogin } = useLogin();
 
   let navigate = useNavigate();
 
   const sendCode = async (code, state, count) => {
-    const { success, message } = await githubLogin(code, state);
+    const { success, message } = await googleLogin(code, state);
     if (!success) {
       if (message) {
         showError(message);
@@ -52,7 +48,7 @@ const GitHubOAuth = () => {
     let code = searchParams.get('code');
     let state = searchParams.get('state');
     sendCode(code, state, 0).then();
-  }, [searchParams, sendCode]);
+  }, []);
 
   return (
     <AuthWrapper>
@@ -72,7 +68,7 @@ const GitHubOAuth = () => {
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
                           <Typography color={theme.palette.primary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                            {t('loginWithGitHub')}
+                            {t('loginWithGoogle')}
                           </Typography>
                         </Stack>
                       </Grid>
@@ -94,4 +90,4 @@ const GitHubOAuth = () => {
   );
 };
 
-export default GitHubOAuth;
+export default GoogleOAuth;

@@ -107,7 +107,7 @@ const EditModal = ({ open, channelId, onCancel, onOk }) => {
     initChannel(typeValue);
     let localModels = getChannelModels(typeValue);
     setBasicModels(localModels);
-    if (localModels.length > 0 && Array.isArray(values['models']) && values['models'].length == 0) {
+    if (localModels.length > 0 && Array.isArray(values['models']) && values['models'].length === 0) {
       setFieldValue('models', initialModel(localModels));
     }
 

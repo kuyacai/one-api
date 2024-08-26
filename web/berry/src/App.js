@@ -18,6 +18,7 @@ import UserProvider from 'contexts/UserContext';
 import StatusProvider from 'contexts/StatusContext';
 import { SnackbarProvider } from 'notistack';
 
+
 // ==============================|| APP ||============================== //
 
 const App = () => {
@@ -30,8 +31,9 @@ const App = () => {
       dispatch({ type: SET_THEME, theme: storedTheme });
     }
   }, [dispatch]);
-
+  
   return (
+   
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={themes(customization)}>
         <CssBaseline />
@@ -46,6 +48,7 @@ const App = () => {
         </NavigationScroll>
       </ThemeProvider>
     </StyledEngineProvider>
+    
   );
 };
 

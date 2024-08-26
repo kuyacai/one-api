@@ -29,24 +29,26 @@ const (
 // User if you add sensitive fields, don't forget to clean them in setupLogin function.
 // Otherwise, the sensitive information will be saved on local storage in plain text!
 type User struct {
-	Id               int    `json:"id"`
-	Username         string `json:"username" gorm:"unique;index" validate:"max=12"`
-	Password         string `json:"password" gorm:"not null;" validate:"min=8,max=20"`
-	DisplayName      string `json:"display_name" gorm:"index" validate:"max=20"`
-	Role             int    `json:"role" gorm:"type:int;default:1"`   // admin, util
-	Status           int    `json:"status" gorm:"type:int;default:1"` // enabled, disabled
-	Email            string `json:"email" gorm:"index" validate:"max=50"`
-	GitHubId         string `json:"github_id" gorm:"column:github_id;index"`
-	WeChatId         string `json:"wechat_id" gorm:"column:wechat_id;index"`
-	LarkId           string `json:"lark_id" gorm:"column:lark_id;index"`
-	VerificationCode string `json:"verification_code" gorm:"-:all"`                                    // this field is only for Email verification, don't save it to database!
+    Id               int    `json:"id"`
+    Username         string `json:"username" gorm:"unique;index" validate:"max=12"`
+    Password         string `json:"password" gorm:"not null;" validate:"min=8,max=20"`
+    DisplayName      string `json:"display_name" gorm:"index" validate:"max=20"`
+    Role             int    `json:"role" gorm:"type:int;default:1"`   // admin, util
+    Status           int    `json:"status" gorm:"type:int;default:1"` // enabled, disabled
+    Email            string `json:"email" gorm:"index" validate:"max=50"`
+    GitHubId         string `json:"github_id" gorm:"column:github_id;index"`
+    WeChatId         string `json:"wechat_id" gorm:"column:wechat_id;index"`
+    LarkId           string `json:"lark_id" gorm:"column:lark_id;index"`
+    GoogleId         string `json:"google_id" gorm:"column:google_id;index"` // 新增 Google OAuth 字段
+    AppleId          string `json:"apple_id" gorm:"column:apple_id;index"`   // 新增 Apple OAuth 字段
+    VerificationCode string `json:"verification_code" gorm:"-:all"`                                    // this field is only for Email verification, don't save it to database!
 	AccessToken      string `json:"access_token" gorm:"type:char(32);column:access_token;uniqueIndex"` // this token is for system management
-	Quota            int64  `json:"quota" gorm:"bigint;default:0"`
-	UsedQuota        int64  `json:"used_quota" gorm:"bigint;default:0;column:used_quota"` // used quota
-	RequestCount     int    `json:"request_count" gorm:"type:int;default:0;"`             // request number
-	Group            string `json:"group" gorm:"type:varchar(32);default:'default'"`
-	AffCode          string `json:"aff_code" gorm:"type:varchar(32);column:aff_code;uniqueIndex"`
-	InviterId        int    `json:"inviter_id" gorm:"type:int;column:inviter_id;index"`
+    Quota            int64  `json:"quota" gorm:"bigint;default:0"`
+    UsedQuota        int64  `json:"used_quota" gorm:"bigint;default:0;column:used_quota"` // used quota
+    RequestCount     int    `json:"request_count" gorm:"type:int;default:0;"`             // request number
+    Group            string `json:"group" gorm:"type:varchar(32);default:'default'"`
+    AffCode          string `json:"aff_code" gorm:"type:varchar(32);column:aff_code;uniqueIndex"`
+    InviterId        int    `json:"inviter_id" gorm:"type:int;column:inviter_id;index"`
 }
 
 func GetMaxUserId() int {
@@ -236,7 +238,20 @@ func (user *User) FillUserByGitHubId() error {
 	DB.Where(User{GitHubId: user.GitHubId}).First(user)
 	return nil
 }
-
+func (user *User) FillUserByGoogleId() error {
+	if user.GoogleId == "" {
+		return errors.New("Google id 为空！")
+	}
+	DB.Where(User{GoogleId: user.GoogleId}).First(user)
+	return nil
+}
+func (user *User) FillUserByAppleId() error {
+	if user.AppleId == "" {
+		return errors.New("Apple id 为空！")
+	}
+	DB.Where(User{AppleId: user.AppleId}).First(user)
+	return nil
+}
 func (user *User) FillUserByLarkId() error {
 	if user.LarkId == "" {
 		return errors.New("lark id 为空！")
@@ -272,7 +287,12 @@ func IsWeChatIdAlreadyTaken(wechatId string) bool {
 func IsGitHubIdAlreadyTaken(githubId string) bool {
 	return DB.Where("github_id = ?", githubId).Find(&User{}).RowsAffected == 1
 }
-
+func IsGoogleIdAlreadyTaken(googleId string) bool {
+	return DB.Where("google_id = ?", googleId).Find(&User{}).RowsAffected == 1
+}
+func IsAppleIdAlreadyTaken(appleId string) bool {
+	return DB.Where("apple_id = ?", appleId).Find(&User{}).RowsAffected == 1
+}
 func IsLarkIdAlreadyTaken(githubId string) bool {
 	return DB.Where("lark_id = ?", githubId).Find(&User{}).RowsAffected == 1
 }

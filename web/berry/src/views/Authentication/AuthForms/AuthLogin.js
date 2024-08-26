@@ -34,9 +34,12 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Github from 'assets/images/icons/github.svg';
+import GoogleLogo from 'assets/images/icons/social-google.svg';
+import AppleLogo from 'assets/images/icons/apple-black.svg';
+
 import Wechat from 'assets/images/icons/wechat.svg';
 import Lark from 'assets/images/icons/lark.svg';
-import { onGitHubOAuthClicked, onLarkOAuthClicked } from 'utils/common';
+import { onGitHubOAuthClicked, onLarkOAuthClicked, onGoogleOAuthClicked,onAppleOAuthClicked } from 'utils/common';
 
 import { useTranslation } from 'react-i18next';
 
@@ -52,9 +55,15 @@ const LoginForm = ({ ...others }) => {
   // const [checked, setChecked] = useState(true);
 
   let tripartiteLogin = false;
-  if (siteInfo.github_oauth || siteInfo.wechat_login || siteInfo.lark_client_id) {
-    tripartiteLogin = true;
-  }
+  // support github, wechat, lark, google, apple login
+  if (siteInfo.github_oauth ||
+      siteInfo.wechat_login ||
+      siteInfo.lark_client_id ||
+      siteInfo.google_oauth ||
+      siteInfo.apple_oauth
+      ) {
+        tripartiteLogin = true;
+      }
 
   const handleWechatOpen = () => {
     setOpenWechat(true);
@@ -74,6 +83,7 @@ const LoginForm = ({ ...others }) => {
   };
 
   const { t } = useTranslation();
+
 
   return (
     <>
@@ -102,6 +112,56 @@ const LoginForm = ({ ...others }) => {
               </AnimateButton>
             </Grid>
           )}
+          {/** support google oath */}
+          {siteInfo.google_oauth && (
+            <Grid item xs={12}>
+              <AnimateButton>
+                <Button
+                  disableElevation
+                  fullWidth
+                  onClick={() => onGoogleOAuthClicked(siteInfo.google_client_id)}
+                  size="large"
+                  variant="outlined"
+                  sx={{
+                    color: 'grey.700',
+                    backgroundColor: theme.palette.grey[50],
+                    borderColor: theme.palette.grey[100]
+                  }}
+                >
+                  <Box sx={{ mr: { xs: 1, sm: 2, width: 20 }, display: 'flex', alignItems: 'center' }}>
+                    <img src={GoogleLogo} alt="google" width={25} height={25} style={{ marginRight: matchDownSM ? 8 : 16 }} />
+                  </Box>
+                  {t('loginWithGoogle')}
+                </Button>
+              </AnimateButton>
+            </Grid>
+          )}
+          {/** support apple oath */}
+          {siteInfo.apple_oauth && (
+            <Grid item xs={12}>
+              <AnimateButton>
+                <Button
+                  disableElevation
+                  fullWidth
+                  onClick={() => onAppleOAuthClicked(siteInfo.apple_client_id)}
+                  size="large"
+                  variant="outlined"
+                  sx={{
+                    color: 'grey.700',
+                    backgroundColor: theme.palette.grey[50],
+                    borderColor: theme.palette.grey[100]
+                  }}
+                >
+                  <Box sx={{ mr: { xs: 1, sm: 2, width: 20 }, display: 'flex', alignItems: 'center' }}>
+                    <img src={AppleLogo} alt="Apple" width={25} height={25} style={{ marginRight: matchDownSM ? 8 : 16 }} />
+                  </Box>
+                  {t('loginWithApple')}
+                </Button>
+              </AnimateButton>
+            </Grid>
+          )}
+
+
           {siteInfo.wechat_login && (
             <Grid item xs={12}>
               <AnimateButton>
@@ -282,7 +342,7 @@ const LoginForm = ({ ...others }) => {
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                {t('login')}
+                  {t('login')}
                 </Button>
               </AnimateButton>
             </Box>

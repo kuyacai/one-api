@@ -25,13 +25,13 @@ const ResponseTimeLabel = ({ test_time, response_time, handle_action }) => {
     <>
       {t('clickToTestSpeed')}
       <br />
-      {test_time != 0 ? t('lastTestTime') + timestamp2string(test_time) : t('notTested')}
+      {test_time !== 0 ? t('lastTestTime') + timestamp2string(test_time) : t('notTested')}
     </>
   );
 
   return (
     <Tooltip title={title} placement="top" onClick={handle_action}>
-      <Label color={color}> {response_time == 0 ? t('notTested') : time} </Label>
+      <Label color={color}> {response_time === 0 ? t('notTested') : time} </Label>
     </Tooltip>
   );
 };
