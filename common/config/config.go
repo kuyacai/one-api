@@ -11,7 +11,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var SystemName = "One API"
+var SystemName = "Nine One AI"
 var ServerAddress = "http://localhost:3000"
 var Footer = ""
 var Logo = ""
