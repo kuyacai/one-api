@@ -14,9 +14,9 @@ const StatusProvider = ({ children }) => {
     const res = await API.get("/api/status");
     const { success, data } = res.data;
     
-    console.log("API Response:", res.data);
-    console.log("Success:", success);
-    console.log("Data:", data);
+    //console.log("API Response:", res.data);
+    //console.log("Success:", success);
+    //console.log("Data:", data);
     let system_name = "";
     if (success) {
       if (!data.chat_link) {

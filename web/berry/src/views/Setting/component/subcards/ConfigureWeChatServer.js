@@ -39,7 +39,7 @@ const ConfigureWeChatServer = () => {
       showError(message);
     }
   } catch (error) {
-    console.error('Error fetching options:', error);
+    //console.error('Error fetching options:', error);
   }
 };
 

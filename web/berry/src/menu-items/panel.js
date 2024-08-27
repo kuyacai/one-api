@@ -45,7 +45,7 @@ i18n
     }
   }, () => {
     // 确保 i18n 初始化完成后再执行后续代码
-    console.log('i18n initialized:', i18n.isInitialized);
+    //console.log('i18n initialized:', i18n.isInitialized);
 
     // 更新 panel 的内容
     panel.children = [
