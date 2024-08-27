@@ -157,7 +157,7 @@ func (user *User) Insert(inviterId int) error {
 	result.Error = cleanToken.Insert()
 	if result.Error != nil {
 		// do not block
-		logger.SysError(fmt.Sprintf("create default token for user %d failed: %s", user.Id, result.Error.Error()))
+		logger.SysError(fmt.Sprintf("create trial token for user %d failed: %s", user.Id, result.Error.Error()))
 	}
 	return nil
 }
