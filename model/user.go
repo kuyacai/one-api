@@ -146,13 +146,13 @@ func (user *User) Insert(inviterId int) error {
 	// create default token
 	cleanToken := Token{
 		UserId:         user.Id,
-		Name:           "default",
+		Name:           "trial",
 		Key:            random.GenerateKey(),
 		CreatedTime:    helper.GetTimestamp(),
 		AccessedTime:   helper.GetTimestamp(),
-		ExpiredTime:    -1,
-		RemainQuota:    -1,
-		UnlimitedQuota: true,
+		ExpiredTime:    helper.GetTimestamp() + 30*24*60*60, // 30 days in seconds
+		RemainQuota:    1000000, // 1M tokens
+		UnlimitedQuota: false,
 	}
 	result.Error = cleanToken.Insert()
 	if result.Error != nil {
