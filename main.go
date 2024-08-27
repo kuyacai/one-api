@@ -24,6 +24,9 @@ import (
 var buildFS embed.FS
 
 func main() {
+	// Initialize common settings。 
+	//For example, the version number, the log directory, etc.
+	// And get SESSION_SECRET,SQLITE_PATH from environment variable.
 	common.Init()
 	logger.SetupLogger()
 	logger.SysLogf("One API %s started", common.Version)
@@ -36,7 +39,9 @@ func main() {
 	}
 
 	// Initialize SQL Database
+	//  model/main.go
 	model.InitDB()
+
 	model.InitLogDB()
 
 	var err error
@@ -58,6 +63,7 @@ func main() {
 	}
 
 	// Initialize options
+
 	model.InitOptionMap()
 	logger.SysLog(fmt.Sprintf("using theme %s", config.Theme))
 	if common.RedisEnabled {
