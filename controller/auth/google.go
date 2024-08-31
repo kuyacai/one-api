@@ -15,11 +15,15 @@ import (
     googleOauth2 "google.golang.org/api/oauth2/v2"
 )
 
-func getGoogleOAuthConfig() *oauth2.Config {
+func getGoogleOAuthConfig(redirectURI string) *oauth2.Config {
+    if redirectURI == "" {
+        redirectURI = config.GoogleRedirectUri // 默认值
+    }
+
     return &oauth2.Config{
         ClientID:     config.GoogleClientId,
         ClientSecret: config.GoogleClientSecret,
-        RedirectURL:  config.GoogleRedirectUri,
+        RedirectURL:  redirectURI,
         Scopes: []string{
             "https://www.googleapis.com/auth/userinfo.profile",
             "https://www.googleapis.com/auth/userinfo.email",
@@ -31,11 +35,11 @@ func getGoogleOAuthConfig() *oauth2.Config {
     }
 }
 
-func getGoogleUserInfoByCode(code string) (*googleOauth2.Userinfo, error) {
+func getGoogleUserInfoByCode(code,redirectURI string) (*googleOauth2.Userinfo, error) {
     if code == "" {
         return nil, errors.New("无效的参数")
     }
-    googleOAuthConfig := getGoogleOAuthConfig()
+    googleOAuthConfig := getGoogleOAuthConfig(redirectURI)
     //log.Printf("Google OAuth Config: %+v\n", googleOAuthConfig)
     token, err := googleOAuthConfig.Exchange(context.Background(), code)
     if err != nil {
@@ -77,7 +81,8 @@ func GoogleOAuth(c *gin.Context) {
         return
     }
     code := c.Query("code")
-    googleUser, err := getGoogleUserInfoByCode(code)
+    redirectURI := c.Query("redirect_uri")
+    googleUser, err := getGoogleUserInfoByCode(code,redirectURI)
     if err != nil {
         c.JSON(http.StatusOK, gin.H{
             "success": false,
