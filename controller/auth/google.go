@@ -149,7 +149,8 @@ func GoogleBind(c *gin.Context) {
         return
     }
     code := c.Query("code")
-    googleUser, err := getGoogleUserInfoByCode(code)
+    redirectURI := c.Query("redirect_uri")
+    googleUser, err := getGoogleUserInfoByCode(code,redirectURI)
     if err != nil {
         c.JSON(http.StatusOK, gin.H{
             "success": false,
