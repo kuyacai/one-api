@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -77,6 +76,17 @@ func SetupLogin(user *model.User, c *gin.Context) {
 		})
 		return
 	}
+
+	// 生成 JWT token
+    jwtToken, err := common.GenerateJWT(user.Username, user.Role, user.Id, user.Status)
+    if err != nil {
+        c.JSON(http.StatusOK, gin.H{
+            "message": "无法生成 JWT token，请重试",
+            "success": false,
+        })
+        return
+    }
+
 	cleanUser := model.User{
 		Id:          user.Id,
 		Username:    user.Username,
@@ -88,6 +98,7 @@ func SetupLogin(user *model.User, c *gin.Context) {
 		"message": "",
 		"success": true,
 		"data":    cleanUser,
+		"jwttoken": jwtToken, // 返回 JWT token
 	})
 }
 
@@ -806,4 +817,70 @@ func AdminTopUp(c *gin.Context) {
 		"message": "",
 	})
 	return
+}
+
+// support JWT token
+// ValidateJWTHandler handles the validation of JWT token
+
+func ValidateJWTHandler(c *gin.Context) {
+    tokenString := c.Request.Header.Get("Authorization")
+    if tokenString == "" {
+        c.JSON(http.StatusUnauthorized, gin.H{
+            "message": "未提供 token",
+            "success": false,
+            "data":    nil,
+            "jwttoken": "",
+        })
+        return
+    }
+
+    claims, err := common.ValidateJWT(tokenString)
+    if err != nil {
+        c.JSON(http.StatusUnauthorized, gin.H{
+            "message": "无效的 token",
+            "success": false,
+            "data":    nil,
+            "jwttoken": "",
+        })
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{
+        "message": "token 有效",
+        "success": true,
+        "data":    claims,
+        "jwttoken": tokenString,
+    })
+}
+
+// ValidateJWTWithNewTokenHandler handles the validation of JWT token and returns a new token
+func ValidateJWTWithNewTokenHandler(c *gin.Context) {
+    tokenString := c.Request.Header.Get("Authorization")
+    if tokenString == "" {
+        c.JSON(http.StatusUnauthorized, gin.H{
+            "message": "未提供 token",
+            "success": false,
+            "data":    nil,
+            "jwttoken": "",
+        })
+        return
+    }
+
+    claims, newToken, err := common.ValidateJWTWithNewToken(tokenString)
+    if err != nil {
+        c.JSON(http.StatusUnauthorized, gin.H{
+            "message": "无效的 token",
+            "success": false,
+            "data":    nil,
+            "jwttoken": "",
+        })
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{
+        "message": "token 有效",
+        "success": true,
+        "data":    claims,
+        "jwttoken": newToken,
+    })
 }

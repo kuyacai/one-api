@@ -7,11 +7,13 @@ import (
 	"github.com/songquanpeng/one-api/common/blacklist"
 	"github.com/songquanpeng/one-api/common/ctxkey"
 	"github.com/songquanpeng/one-api/common/network"
+	"github.com/songquanpeng/one-api/common"
 	"github.com/songquanpeng/one-api/model"
 	"net/http"
 	"strings"
 )
 
+//增加支持JWT的认证
 func authHelper(c *gin.Context, minRole int) {
 	session := sessions.Default(c)
 	username := session.Get("username")
@@ -19,31 +21,51 @@ func authHelper(c *gin.Context, minRole int) {
 	id := session.Get("id")
 	status := session.Get("status")
 	if username == nil {
-		// Check access token
+		// modify by rupert 
+		// support JWT token
+		// 1.Check access token
 		accessToken := c.Request.Header.Get("Authorization")
-		if accessToken == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"success": false,
-				"message": "无权进行此操作，未登录且未提供 access token",
-			})
-			c.Abort()
-			return
-		}
-		user := model.ValidateAccessToken(accessToken)
-		if user != nil && user.Username != "" {
-			// Token is valid
-			username = user.Username
-			role = user.Role
-			id = user.Id
-			status = user.Status
-		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"success": false,
-				"message": "无权进行此操作，access token 无效",
-			})
-			c.Abort()
-			return
-		}
+		if accessToken != "" {
+			//如果access token JWT token，这里验证就不会通过。也就是user 为nil
+            user := model.ValidateAccessToken(accessToken)
+            if user != nil && user.Username != "" {
+                // Custom token is valid
+                username = user.Username
+                role = user.Role
+                id = user.Id
+                status = user.Status
+            }
+        }
+
+		// If custom token is invalid, check JWT token
+        if username == nil {
+            tokenString := c.Request.Header.Get("Authorization")
+            if tokenString == "" {
+                c.JSON(http.StatusUnauthorized, gin.H{
+                    "success": false,
+                    "message": "无权进行此操作，未登录且未提供 token",
+                })
+                c.Abort()
+                return
+            }
+
+            claims, err := common.ValidateJWT(tokenString)
+            if err != nil {
+                c.JSON(http.StatusUnauthorized, gin.H{
+                    "success": false,
+                    "message": "无权进行此操作，token 无效",
+                })
+                c.Abort()
+                return
+            }
+
+            // JWT token is valid
+            username = claims.Username
+            role = claims.Role
+            id = claims.Id
+            status = claims.Status
+        }
+
 	}
 	if status.(int) == model.UserStatusDisabled || blacklist.IsUserBanned(id.(int)) {
 		c.JSON(http.StatusOK, gin.H{

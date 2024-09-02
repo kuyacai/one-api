@@ -32,6 +32,10 @@ func SetApiRouter(router *gin.Engine) {
 		apiRouter.GET("/oauth/email/bind", middleware.CriticalRateLimit(), middleware.UserAuth(), controller.EmailBind)
 		apiRouter.POST("/topup", middleware.AdminAuth(), controller.AdminTopUp)
 
+		// 新增的 JWT 验证端点
+        apiRouter.POST("/validate_jwt", controller.ValidateJWTHandler)
+        apiRouter.POST("/validate_jwt_with_new_token", controller.ValidateJWTWithNewTokenHandler)
+
 		userRoute := apiRouter.Group("/user")
 		{
 			userRoute.POST("/register", middleware.CriticalRateLimit(), middleware.TurnstileCheck(), controller.Register)
