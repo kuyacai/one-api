@@ -69,7 +69,7 @@ i18n
       },
       {
         id: 'token',
-        title: i18n.t('token'),
+        title: i18n.t('APIkey'),
         type: 'item',
         url: '/panel/token',
         icon: icons.IconKey,

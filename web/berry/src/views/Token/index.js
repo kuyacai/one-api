@@ -158,7 +158,7 @@ export default function Token() {
       </Stack>
       <Stack mb={2}>
         <Alert severity="info">
-          {t('replaceOpenAIApiBaseUrl')} <b>{siteInfo.server_address}</b>，{t('copyKeyToUse')}
+          {t('replaceOpenAIApiBaseUrl')} <b>https://api.nineone.ai</b>，{t('copyKeyToUse')}
         </Alert>
       </Stack>
       <Card>
